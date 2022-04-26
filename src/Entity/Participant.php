@@ -7,71 +7,233 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\Table (name="Participants")
+ * @UniqueEntity(fields={"email"}, message="Cette adresse email est déjà utilisée.")
+ * @UniqueEntity(fields={"pseudo"}, message="Ce pseudo est déjà utilisé.")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(name="email", type="string", length=180, unique=true)
+     *
+     * @Assert\NotBlank(message="L'adresse email est requise !")
+     * @Assert\Email(message="L'adresse email '{{ value }}' est invalide !")
+     * @Assert\Length(
+     *     max = 180,
+     *     maxMessage = "L'adresse email doit être composée d'au maximum {{ limit }} caractères !"
+     * )
      */
-    private ?string $email;
+    private ?string $email = null;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(name="pseudo", type="string", length=30, unique=true)
+     *
+     * @Assert\Length(
+     *     min = 4,
+     *     max = 30,
+     *     minMessage = "Le pseudo doit être composé d'au moins {{ limit }} caractères !",
+     *     maxMessage = "Le pseudo doit être composé d'au maximum {{ limit }} caractères !"
+     * )
+     * @Assert\NotBlank(message="Le pseudo est requis !")
+     */
+    private ?string $pseudo = null;
+
+
+    /**
+     * @ORM\Column(name="roles", type="json")
      */
     private array $roles = [];
 
     /**
-     * @var string The hashed password
-     * @ORM\Column(name="email", type="string")
+     * @ORM\Column(name="password", type="string", length=100)
      */
     private string $password;
 
     /**
-     * @ORM\Column(name="pseudo", type="string", length=50)
+     * @Assert\NotBlank(message="Le mot de passe est requis !")
+     * @Assert\Length(
+     *     min = 6,
+     *     max = 50,
+     *     minMessage = "Le mot de passe doit contenir au minimum {{ limit }} caractères !",
+     *     maxMessage = "Le mot de passe doit contenir au maximum {{ limit }} caractères !",)
      */
-    private ?string $pseudo;
+    private ?string $plainPassword = null;
+    // à rajouter lorsqu'on voudra présenter notre projet et donc sécuriser le mdp
+//* @Assert\NotCompromisedPassword(message="Le mot de passe n'est pas assez complexe !", skipOnError=true)
 
     /**
      * @ORM\Column(name="nom", type="string", length=50)
+     *
+     * @Assert\NotBlank(message="Le nom est requis !")
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 50,
+     *     minMessage = "Le nom doit être composé d'au moins {{ limit }} caractères !",
+     *     maxMessage = "Le nom doit être composé d'au maximum {{ limit }} caractères !")
      */
-    private ?string $nom;
+    private ?string $nom = null;
 
     /**
      * @ORM\Column(name="prenom", type="string", length=50)
+     *
+     * @Assert\NotBlank(message="Le prénom est requis !")
+     * @Assert\Length(
+     *     min = 3,
+     *     max = 50,
+     *     minMessage = "Le prénom doit être composé d'au moins {{ limit }} caractères !",
+     *     maxMessage = "Le prénom doit être composé d'au maximum {{ limit }} caractères !")
      */
-    private ?string $prenom;
+    private ?string $prenom = null;
 
     /**
      * @ORM\Column(name="telephone", type="string", length=10)
+     *
+     * @Assert\NotBlank(message="Le numéro de téléphone est requis !")
+     * @Assert\Length(
+     *     min = 10,
+     *     max = 10,
+     *     exactMessage = "Le numéro de téléphone doit contenir {{ limit }} caractères !",
+     *     )
      */
-    private ?string $telephone;
+    private ?string $telephone = null;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\JoinColumn(name="campus_id", nullable=false)
+     */
+    private ?Campus $campus = null;
+
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
     {
         $this->email = $email;
+    }
 
-        return $this;
+    /**
+     * @return string|null
+     */
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * @param string $pseudo
+     */
+    public function setPseudo(string $pseudo): void
+    {
+        $this->pseudo = $pseudo;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     */
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    /**
+     * @param string $prenom
+     */
+    public function setPrenom(string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * @param string $telephone
+     */
+    public function setTelephone(string $telephone): void
+    {
+        $this->telephone = $telephone;
     }
 
     /**
@@ -81,7 +243,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -89,7 +251,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->getUserIdentifier();
     }
 
     /**
@@ -104,32 +266,27 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
     /**
-     * @see PasswordAuthenticatedUserInterface
+     * @param string $role
+     * @return void
      */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
+    public function addRole(string $role): void {
+        if (!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
     }
 
     /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
+     * @param string $role
+     * @return void
+     */
+    public function removeRole(string $role): void {
+        $this->roles = array_filter($this->roles, function (string $currentRole) use ($role) {
+            return $currentRole !== $role;
+        });
+    }
+
+    /**
      * @see UserInterface
      */
     public function getSalt(): ?string
@@ -143,54 +300,25 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 
-    public function getPseudo(): ?string
+    /**
+     * @return Campus|null
+     */
+    public function getCampus(): ?Campus
     {
-        return $this->pseudo;
+        return $this->campus;
     }
 
-    public function setPseudo(string $pseudo): self
+    /**
+     * @param Campus|null $campus
+     */
+    public function setCampus(?Campus $campus): void
     {
-        $this->pseudo = $pseudo;
+        $this->campus = $campus;
 
-        return $this;
     }
 
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
 
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(string $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
 }
