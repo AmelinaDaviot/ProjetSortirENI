@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Repository\ParticipantRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +23,12 @@ class AuthentificationAuthenticator extends AbstractLoginFormAuthenticator
     public const LOGIN_ROUTE = 'securite_connexion';
 
     private UrlGeneratorInterface $urlGenerator;
+    private ParticipantRepository $participantRepository;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, ParticipantRepository $participantRepository)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->participantRepository = $participantRepository;
     }
 
     public function authenticate(Request $request): Passport
@@ -62,8 +65,7 @@ class AuthentificationAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+         return new RedirectResponse($this->urlGenerator->generate('ville'));
     }
 
     protected function getLoginUrl(Request $request): string
