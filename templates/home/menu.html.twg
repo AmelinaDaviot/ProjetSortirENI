@@ -1,0 +1,6 @@
+{#chemin venant de routing.yml#}
+{#    <a href="{{path('') }}">Villes</a> -#}
+{#    <a href="{{path('') }}">Sites</a> -#}
+{#   <a href="{{path('homepage') }}">Accueil</a> -#}
+{#    <a href="{{path('') }}">Mon profil</a> -#}
+{#    <a href="{{path('') }}">Se deconnecter</a> #}
