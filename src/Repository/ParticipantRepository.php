@@ -27,8 +27,6 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function add(Participant $entity, bool $flush = true): void
     {
@@ -39,8 +37,6 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function remove(Participant $entity, bool $flush = true): void
     {
