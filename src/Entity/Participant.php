@@ -19,23 +19,43 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(name="email", type="string", length=180, unique=true)
      */
-    private $email;
+    private ?string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="email", type="string")
      */
-    private $password;
+    private string $password;
+
+    /**
+     * @ORM\Column(name="pseudo", type="string", length=50)
+     */
+    private ?string $pseudo;
+
+    /**
+     * @ORM\Column(name="nom", type="string", length=50)
+     */
+    private ?string $nom;
+
+    /**
+     * @ORM\Column(name="prenom", type="string", length=50)
+     */
+    private ?string $prenom;
+
+    /**
+     * @ORM\Column(name="telephone", type="string", length=10)
+     */
+    private ?string $telephone;
 
     public function getId(): ?int
     {
@@ -124,5 +144,53 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
     }
 }

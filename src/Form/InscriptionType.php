@@ -5,19 +5,47 @@ namespace App\Form;
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class InscriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('pseudo', TextType::class,[
+                'required' => true,
+                'label' => 'Pseudo',
+            ])
+
+            ->add('prenom', TextType::class,[
+                'required' => true,
+                'label' => 'Prénom',
+            ])
+
+            ->add('nom', TextType::class,[
+                'required' => true,
+                'label' => 'Nom',
+            ])
+
+            ->add('telephone', TelType::class,[
+                'required' => true,
+                'label' => 'Téléphone',
+                'invalid_message' => 'Le numéro de téléphone n\'est pas valide.'
+            ])
+
+            ->add('email', EmailType::class, [
+                'required' => true,
+                'label' => 'Email',
+            ])
+
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
