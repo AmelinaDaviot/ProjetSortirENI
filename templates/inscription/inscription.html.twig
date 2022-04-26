@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Inscription d'un nouveau participant</h1>
+
+    {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+    {{ form(registrationForm)}}
+
+{% endblock %}
