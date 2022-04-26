@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
-use App\Form\RegistrationFormType;
+use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,15 +12,18 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RegistrationController extends AbstractController
+/**
+ * @Route(name="admin_", path="admin/")
+ */
+class InscriptionController extends AbstractController
 {
     /**
-     * @Route("/register", name="register")
+     * @Route(path="inscription", name="inscription")
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new Participant();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(InscriptionType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -39,7 +42,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_ville');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('inscription/inscription.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
