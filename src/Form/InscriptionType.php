@@ -65,6 +65,7 @@ class InscriptionType extends AbstractType
                 'required' => true,
                 'label' => 'Campus',
                 'class' => Campus::class,
+                'attr' => ['class' => 'form-control'],
                 //Classer par ordre alphabétique les noms de campus
                 'query_builder' => function(CampusRepository $cr) {
                     return $cr->createQueryBuilder('campus')

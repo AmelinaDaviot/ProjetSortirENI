@@ -39,7 +39,7 @@ class InscriptionController extends AbstractController
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_ville');
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render('inscription/inscription.html.twig', [
