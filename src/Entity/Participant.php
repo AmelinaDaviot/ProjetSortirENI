@@ -22,7 +22,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      */
-    private ?int $id = null;
+    private ?int $id;
 
     /**
      * @ORM\Column(name="email", type="string", length=180, unique=true)
@@ -34,7 +34,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     maxMessage = "L'adresse email doit être composée d'au maximum {{ limit }} caractères !"
      * )
      */
-    private ?string $email = null;
+    private ?string $email;
 
     /**
      * @ORM\Column(name="pseudo", type="string", length=30, unique=true)
@@ -47,7 +47,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * )
      * @Assert\NotBlank(message="Le pseudo est requis !")
      */
-    private ?string $pseudo = null;
+    private ?string $pseudo;
 
 
     /**
@@ -68,7 +68,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     minMessage = "Le mot de passe doit contenir au minimum {{ limit }} caractères !",
      *     maxMessage = "Le mot de passe doit contenir au maximum {{ limit }} caractères !",)
      */
-    private ?string $plainPassword = null;
+    private ?string $plainPassword;
     // à rajouter lorsqu'on voudra présenter notre projet et donc sécuriser le mdp
 //* @Assert\NotCompromisedPassword(message="Le mot de passe n'est pas assez complexe !", skipOnError=true)
 
@@ -82,7 +82,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     minMessage = "Le nom doit être composé d'au moins {{ limit }} caractères !",
      *     maxMessage = "Le nom doit être composé d'au maximum {{ limit }} caractères !")
      */
-    private ?string $nom = null;
+    private ?string $nom;
 
     /**
      * @ORM\Column(name="prenom", type="string", length=50)
@@ -94,7 +94,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     minMessage = "Le prénom doit être composé d'au moins {{ limit }} caractères !",
      *     maxMessage = "Le prénom doit être composé d'au maximum {{ limit }} caractères !")
      */
-    private ?string $prenom = null;
+    private ?string $prenom;
 
     /**
      * @ORM\Column(name="telephone", type="string", length=10)
@@ -106,13 +106,13 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     exactMessage = "Le numéro de téléphone doit contenir {{ limit }} caractères !",
      *     )
      */
-    private ?string $telephone = null;
+    private ?string $telephone;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
      * @ORM\JoinColumn(name="campus_id", nullable=false)
      */
-    private ?Campus $campus = null;
+    private ?Campus $campus;
 
 
     /**
