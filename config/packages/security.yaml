@@ -10,9 +10,17 @@ security:
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
+            chain:
+                providers: [db_pseudo, db_email]
+        db_pseudo:
+            entity:
+                class: App\Entity\Participant
+                property: pseudo
+        db_email:
             entity:
                 class: App\Entity\Participant
                 property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -20,7 +28,7 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            custom_authenticator: App\Security\AuthentificationAuthenticator
+            custom_authenticator: App\Security\Authenticator
             logout:
                 path: securite_deconnexion
                 # where to redirect after logout
