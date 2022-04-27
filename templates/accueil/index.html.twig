@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello AccueilController!{% endblock %}
 
 {% block body %}
 
    <a href="{{path('ville') }}">Villes</a> -
-{#    <a href="{{path('') }}">Sites</a> -#}
-   <a href="{{path('home') }}">Accueil</a> -
+{#    <a href="{{path('') }}">Campus</a> -#}
+   <a href="{{path('accueil') }}">Accueil</a> -
 {#    <a href="{{path('') }}">Mon profil</a> -#}
 {#<a href="{{path('securite_connexion') }}">Se deconnecter</a>#}
 
@@ -34,11 +34,11 @@
                 <h4>Filtrer les sorties</h4>
                 <div class="form-group row mb-0">
                     <label class="col-lg-2 col-form-label" for="site">Campus</label>
-                    <select formControlName="site" id="site" class="custom-select col-lg-3">
-{#                        <option *ngFor="let site of sites"#}
-{#                                ngValue="{{ site.nbSite }}"#}
+                    <select formControlName="campus" id="campus" class="custom-select col-lg-3">
+{#                        <option *ngFor="let campus of campus"#}
+{#                                ngValue="{{ site.nbCampus }}"#}
 {#                        >#}
-{#                            {{ site.nameSite }}#}
+{#                            {{ campus.nameCampus }}#}
 {#                        </option>#}
                     </select>
                     <div class="form-check offset-lg-2 d-flex flex-column">
