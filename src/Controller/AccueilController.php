@@ -18,12 +18,12 @@ class AccueilController extends AbstractController
     public function home(): Response
     {
 //        $message = null;
-//        $userRepo = $this->getDoctrine()->getRepository(Participant::class);
+//        $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
 //        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
 //
 //        $toutesLesSorties = $sortieRepo->findAll();
 //
-//        $users = $userRepo->totalParticipantsInscrits();
+//        $participants = $participantRepo->totalParticipantsInscrits();
 //        $sorties = $sortieRepo->totalSortiesOrganisees();
 
 //        dump($participants);

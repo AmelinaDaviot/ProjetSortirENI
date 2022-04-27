@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer un campus{% endblock %}
+
+{% block body %}
+    <h1 class="text-muted">Editer un campus</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6">
+                {{ form_start(form) }}
+                {{ form_label(form.nom) }}
+                {{ form_widget(form.nom) }}
+                {{ form_errors(form.nom) }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-3">
+                {{ form_widget(form.submitt) }}
+                {{ form_end(form) }}
+            </div>
+            <div class="col-5">
+                <a href="{{ path('campus_index') }}">
+                    <button class="btn bouton">Retour à la liste</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

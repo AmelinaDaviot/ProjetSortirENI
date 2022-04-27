@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Campus{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-success mb-3" style="max-width: 18rem;">
+                    <div class="card-header bg-transparent border-success text-muted text-center">Campus N° {{ campus.id }}</div>
+                    <div class="card-body text-success">
+                        <h5 class="card-title">Campus de {{ campus.nom }}</h5>
+                        <p class="card-text"></p>
+                    </div>
+                    <div class="card-footer bg-transparent border-success">
+                        <div class="d-inline-block align-items-center">
+                            <a href="{{ path('campus_edit', {'id': campus.id}) }}" class="btn btn-success">
+{#                                <img alt="plus" class="plus" src="{{ asset('') }}"></a>#}
+                            <div class="d-inline-block">
+                                <form method="post" action="{{ path('campus_delete', {'id': campus.id}) }}"
+                                      onsubmit="return confirm('Êtes vous sur de vouloir supprimer ce campus ?');">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ campus.id) }}">
+                                    <button class="btn btn-danger"><img alt="plus" class="plus"
+{#                                                                        src="{{ asset('') }}">#}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <a href="{{ path('ville') }}">
+                        <button class="btn bouton ">Retour à la liste</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
