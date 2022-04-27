@@ -1,19 +1,100 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+{% apply spaceless %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+    <!doctype html>
+    <html lang="fr">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" href="{{ asset('img/favicon.png') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <title>{% block title %}Sortir{% endblock %}</title>
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     </head>
+
     <body>
-        {% block body %}{% endblock %}
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                        <h4 class="text-white">Bienvenue {% if app.user %}{{ app.user.pseudo|capitalize }} {% endif %}</h4>
+                        <p class="text-muted">Nulla ullamcorper pharetra nunc. Fusce suscipit luctus arcu, a dapibus mauris tincidunt sed. Morbi dignissim risus sed turpis fringilla, quis pretium mauris consequat. Quisque suscipit cursus posuere. Nam ipsum nibh, posuere id arcu quis, gravida dignissim ligula. Aliquam blandit pretium tortor, et fringilla felis posuere et.</p>
+                    </div>
+                    <div class="col-sm-4 offset-md-1 py-4">
+                        <h4 class="text-white">Menu</h4>
+                        <ul class="list-unstyled">
+                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Accueil</a></li>
+                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Mon profil</a></li>
+                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Créer une sortie</a></li>
+                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
+                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Campus</a></li>
+                            <li><a href="{{ path('admin_inscription') }}" class="text-white">Ajouter un utilisateur</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="collapse navbar-collapse navbar navbar-dark bg-dark box-shadow">
+            <div class="container d-flex justify-content-between">
+                <a href="{{ path('securite_connexion') }}" class="navbar-brand d-flex align-items-center">
+                    <img src="{{ asset('img/logo.svg') }}" width="30px" class="mr-2">
+                    <strong>SORTIR</strong>
+                </a>
+                <div class="navbar-brand d-flex align-items-center justify-content-end"><small>Aujourd'hui, nous sommes le {{ "now"|date("d/m/Y") }}</small></div>
+                <a href="" class="navbar-brand d-flex align-items-center justify-content-end"></a>
+                <a href="" class="navbar-brand d-flex align-items-center justify-content-end"></a>
+                <a href="" class="navbar-brand d-flex align-items-center justify-content-end"></a>
+                {% if app.user %}
+                    <div class="btn-group">
+                        <div class="navbar-brand d-flex align-items-center justify-content-end dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ app.user.pseudo|capitalize }}</div>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ path('securite_deconnexion') }}" class="dropdown-item"><i class="fa-regular fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{{ path('securite_connexion') }}" class="navbar-brand d-flex align-items-center justify-content-end">
+                        <img src="{{ asset('img/logo_Connexion6.png') }}" width="45px" class="mr-2" alt="">
+                        Se connecter
+                    </a>
+                {% endif %}
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        <section class="jumbotron">
+            <div class="container">
+                {% block informations %}
+                {% endblock %}
+            </div>
+        </section>
+
+        <div class="container">
+            {% block main %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer class="text-muted">
+        <div class="container">
+            <p class="float-right">
+                <a href="#">Retourner en haut de la page</a>
+            </p>
+            <p>Sortir &copy; {{ "now" | date('Y') }}</p>
+        </div>
+
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
     </body>
-</html>
+    </html>
+
+{% endapply %}
