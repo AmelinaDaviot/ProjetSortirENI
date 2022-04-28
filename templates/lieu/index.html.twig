@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lieu liste{% endblock %}
+
+{% block body %}
+    <h1>Location index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lieu in lieus %}
+            <tr>
+                <td>{{ location.id }}</td>
+                <td>{{ location.name }}</td>
+                <td>{{ location.address }}</td>
+                <td>
+                    <a href="{{ path('location_show', {'id': location.id}) }}">apercu</a>
+                    <a href="{{ path('location_edit', {'id': location.id}) }}">modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('location_new') }}">Créer nouveau</a>
+{% endblock %}
