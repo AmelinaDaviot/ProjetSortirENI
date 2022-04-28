@@ -35,7 +35,7 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('campus');
         }
 
-        return $this->render('campus/create.html.twig', [
+        return $this->render('campus/new.html.twig', [
             'campus' => $campus,
             'form' => $form->createView(),
         ]);
@@ -86,18 +86,18 @@ class CampusController extends AbstractController
         return $this->redirectToRoute('campus_index');
     }
 
-    /**
-     * @Route("/recherche/", name="campus_recherche", methods={"GET"})
-     */
-    public function rechercher(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $rechercher = true;
-        $request = Request::createFromGlobals();
-        $recherche = $request->query->get('recherche');
-        $listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche);
-        /*$listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche["nom"]);*/
-        return $this->render("campus/index.html.twig", ["listeCampus" => $listeCampus, "rechercher" => $rechercher]);
-    }
+//    /**
+//     * @Route("/recherche/", name="campus_recherche", methods={"GET"})
+//     */
+//    public function rechercher(Request $request, EntityManagerInterface $entityManager): Response
+//    {
+//        $rechercher = true;
+//        $request = Request::createFromGlobals();
+//        $recherche = $request->query->get('recherche');
+//        $listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche);
+//        /*$listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche["nom"]);*/
+//        return $this->render("campus/index.html.twig", ["listeCampus" => $listeCampus, "rechercher" => $rechercher]);
+//    }
 
 
 }
