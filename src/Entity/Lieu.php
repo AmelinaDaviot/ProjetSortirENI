@@ -32,7 +32,7 @@ class Lieu
     /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="lieu")
      */
-    private $sortie;
+    private $sorties;
 
 
 
