@@ -37,6 +37,7 @@ class Campus
      */
     private Collection $sorties;
 
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
