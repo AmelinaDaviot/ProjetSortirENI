@@ -27,9 +27,11 @@
                             <li><a href="{{ path('accueil') }}" class="text-white">Accueil</a></li>
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Mon profil</a></li>
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Créer une sortie</a></li>
+                            {% if is_granted ('ROLE_ADMIN') %}
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Campus</a></li>
                             <li><a href="{{ path('admin_inscription') }}" class="text-white">Ajouter un utilisateur</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
