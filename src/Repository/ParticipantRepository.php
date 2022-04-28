@@ -26,14 +26,14 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         parent::__construct($registry, Participant::class);
     }
 
-    public function findById(int $id) : ?Participant
+    public function findByPseudo(string $pseudo) : ?Participant
     {
         $query = $this->createQueryBuilder('p')
             ->addSelect('campus')
-            ->where('p.id = :id')
-            ->setParameter('id', $id)
+            ->where('p.pseudo = :pseudo')
+            ->setParameter('pseudo', $pseudo)
             ->innerJoin('p.campus', 'campus');
-        return $query->getQuery();
+        return $query->getQuery()->getOneOrNullResult();
     }
 
     /**
