@@ -30,7 +30,7 @@ class SortieType extends AbstractType
             ])
 
             ->add('dateHeureDebut',DateTimeType::class, [
-                'label'=>"Date et heure ",
+                'label'=>"Date et heure",
                 'required' =>true,
             ])
 
@@ -46,9 +46,10 @@ class SortieType extends AbstractType
 
             ->add('infosSortie', TextareaType::class,[
                 'label'=>'Description et informations',
+                'required' => false,
                 'trim'=>true,
+            ])
 
-                ])
             ->add('dateLimiteInscription', DateTimeType::class, [
                 'label' => 'Date limite d\'inscription :',
                 'years' => range(2019,2030),
@@ -60,27 +61,25 @@ class SortieType extends AbstractType
             ->add('campus', EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'nom',
-                'placeholder' => '-- Choisir --',
                 'query_builder' => function(EntityRepository $repository) {},
                 'attr' => [
                     'id' => "campus",
-                    'class' => 'form-select',
-
+                    'class' => 'form-control',
                 ]
             ])
 
 
             ->add('ville', EntityType::class, [
-                'label' => 'Ville : ',
+                'label' => 'Ville',
                 'required' => true,
                 'class' => Ville::class,
                 'mapped' => false,
+                'attr' => ['class' => 'form-control'],
                 'query_builder' => function (VilleRepository $cr) {
                     return $cr->createQueryBuilder('ville')
                         ->orderBy('ville.nom', 'ASC');
                 },
                 'choice_label' => 'nom',
-                'placeholder' => '',
             ])
 
 
@@ -103,20 +102,23 @@ class SortieType extends AbstractType
             ->add("lieu", EntityType::class, [
                 "class"=> Lieu::class,
                 'label'=>'Lieu : ',
-                'attr' => array(
-                    'required'=>'required'
-                )
+                'required'=> true,
+                'attr' => ['class' => 'form-control',]
             ])
-
 
             ->add('save', SubmitType::class, [
                 'label' => 'Enregistrer',
-                'attr' => array('class' => 'btn bouton')
+                'attr' => ['class' => 'btn btn-primary']
             ])
 
             ->add('saveAndPublish', SubmitType::class, [
                 'label' => 'Publier',
-                'attr' => array('class' => 'btn bouton')
+                'attr' => array('class' => 'btn btn-success')
+            ])
+
+            ->add('cancel', SubmitType::class, [
+                'label' => 'Annuler',
+                'attr' => array('class' => 'btn btn-danger')
             ]);
 
     }

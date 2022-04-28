@@ -28,7 +28,7 @@
                             {% if app.user %}
                             <li><a href="{{ path('participant_profil', {'pseudo': app.user.pseudo }) }}" class="text-white">Mon profil</a></li>
                             {% endif %}
-                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Créer une sortie</a></li>
+                            <li><a href="{{ path('app_sortie_new') }}" class="text-white">Créer une sortie</a></li>
                             {% if is_granted ('ROLE_ADMIN') %}
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Campus</a></li>

@@ -2,10 +2,16 @@
 
 {% block title %}New Sortie{% endblock %}
 
-{% block main %}
-    <h1>Create new Sortie</h1>
+{%  block informations %}
+    <h1 class="jumbotron-heading text-center">Créer une nouvelle sortie</h1>
+{% endblock %}
 
-    {{ include('sortie/_form.html.twig') }}
+{% block main %}
+
+{#    {{ include('sortie/_form.html.twig') }}#}
+
+    {% form_theme formCreateSortie 'bootstrap_5_layout.html.twig' %}
+    {{ form(formCreateSortie)}}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
 {% endblock %}

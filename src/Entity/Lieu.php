@@ -79,28 +79,28 @@ class Lieu
         return $this->sorties;
     }
 
-    public function addSorty(Sortie $sorty): self
-    {
-        if (!$this->sorties->contains($sorty)) {
-            $this->sorties[] = $sorty;
-            $sorty->setLieu($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSorty(Sortie $sorty): self
-    {
-        if ($this->sorties->contains($sorty)) {
-            $this->sorties->removeElement($sorty);
-            // set the owning side to null (unless already changed)
-            if ($sorty->getLieu() === $this) {
-                $sorty->setLieu(null);
-            }
-        }
-
-        return $this;
-    }
+//    public function addSorty(Sortie $sorty): self
+//    {
+//        if (!$this->sorties->contains($sorty)) {
+//            $this->sorties[] = $sorty;
+//            $sorty->setLieu($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeSorty(Sortie $sorty): self
+//    {
+//        if ($this->sorties->contains($sorty)) {
+//            $this->sorties->removeElement($sorty);
+//            // set the owning side to null (unless already changed)
+//            if ($sorty->getLieu() === $this) {
+//                $sorty->setLieu(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 
     public function getVille(): ?Ville
     {
@@ -116,7 +116,7 @@ class Lieu
 
     public function __toString(): ?string
     {
-        return $this->getNomLieu();
+        return $this->getNom();
     }
 
 //    /**
