@@ -29,41 +29,28 @@ class Sortie
     /**
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(message="La date de début doit être renseignée.")
-     * @Assert\DateTime
-     * @Assert\GreaterThanOrEqual("today", message="La date doit être supérieur ou égale à la date du jour.")
      */
     private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Assert\Type("integer", message="La durée doit être indiquée en chiffres.")
+     * @Assert\Type("integer",message="La durée doit être indiquée en chiffres.")
      * @Assert\NotBlank(message="La durée doit être renseignée.")
-     * @Assert\GreaterThan(value=0, message="La durée, si elle est indiquée, doit être supérieur à 0 minutes.")
+     * @Assert\GreaterThan(value=0,message="La durée, si elle est indiquée, doit être supérieur à 0 minutes.")
      */
     private $duree;
 
     /**
-    *Assert\Expression("this.getdateLimiteInscription() < this.getDateHeureDebut()",
-        message:"La date d'inscription doit être antérieure à la date début.")
-    *Assert\NotBlank(message:"Indiquez la date limite pour s'incrire à votre sortie.")
-    *ORM\Column(type: 'datetime')
-    */
-    private $dateLimiteInscription;
-
-
-    /**
-    *Assert\NotBlank(message:"Indiquez le nombre maximum de participants.")
-    *ORM\Column(type: 'integer')
-    */
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Indiquez le nombre maximum de participants.")
+     */
     private $nbInscriptionsMax;
 
-
     /**
-    *Assert\Length(max:"1000", maxMessage: "Trop long, maximum 1000 caractères.")
-    *ORM\Column(type: 'string', length: 255, nullable: true)
-    */
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(max="1000",maxMessage="Trop long, maximum 1000 caractères.")
+     */
     private $infosSortie;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -71,33 +58,48 @@ class Sortie
     private $motifAnnulation;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateLimiteInscription;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Participant::class, inversedBy="sorties")
+     */
+    private $participants;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="orgaSortie")
      */
     private $participant;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
      */
-    private $campus;
+    private $lieu;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
-     * ORM\JoinColumn(nullable: false)
+     * @ORM\ManyToOne(targetEntity=Etat::class)
      */
     private $etat;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $organisateur;
+    private $campus;
+    
+    
 
     public function __construct()
     {
-        $this->participant = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
-
-
-
 
     public function getId(): ?int
     {
@@ -128,26 +130,14 @@ class Sortie
         return $this;
     }
 
-    public function getDuree(): ?\DateTimeInterface
+    public function getDuree(): ?int
     {
-        return $this->durée;
+        return $this->duree;
     }
 
-    public function setDuree(?\DateTimeInterface $duree): self
+    public function setDuree(?int $duree): self
     {
         $this->duree = $duree;
-
-        return $this;
-    }
-
-    public function getDateLimiteInscription(): ?\DateTimeInterface
-    {
-        return $this->dateLimiteInscription;
-    }
-
-    public function setDateLimiteInscription(\DateTimeInterface $dateLimiteInscription): self
-    {
-        $this->dateLimiteInscription = $dateLimiteInscription;
 
         return $this;
     }
@@ -169,7 +159,7 @@ class Sortie
         return $this->infosSortie;
     }
 
-    public function setInfosSortie(string $infosSortie): self
+    public function setInfosSortie(?string $infosSortie): self
     {
         $this->infosSortie = $infosSortie;
 
@@ -188,22 +178,30 @@ class Sortie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipant(): Collection
+    public function getDateLimiteInscription(): ?\DateTimeInterface
     {
-        return $this->participant;
+        return $this->dateLimiteInscription;
+    }
+
+    public function setDateLimiteInscription(\DateTimeInterface $dateLimiteInscription): self
+    {
+        $this->dateLimiteInscription = $dateLimiteInscription;
+
+        return $this;
     }
 
     /**
-     * @param Participant $participant
-     * @return Sortie
+     * @return Collection<int, Participant>
      */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
     public function addParticipant(Participant $participant): self
     {
-        if (!$this->participant->contains($participant)) {
-            $this->participant[] = $participant;
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
         }
 
         return $this;
@@ -211,19 +209,43 @@ class Sortie
 
     public function removeParticipant(Participant $participant): self
     {
-        $this->participant->removeElement($participant);
+        $this->participants->removeElement($participant);
 
         return $this;
     }
 
-    public function getCampus(): ?Campus
+    public function getOrganisateur(): ?Participant
     {
-        return $this->campus;
+        return $this->organisateur;
     }
 
-    public function setCampus(?Campus $campus): self
+    public function setOrganisateur(?Participant $organisateur): self
     {
-        $this->campus = $campus;
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    public function getParticipant(): ?Participant
+    {
+        return $this->participant;
+    }
+
+    public function setParticipant(?Participant $participant): self
+    {
+        $this->participant = $participant;
+
+        return $this;
+    }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): self
+    {
+        $this->lieu = $lieu;
 
         return $this;
     }
@@ -240,14 +262,14 @@ class Sortie
         return $this;
     }
 
-    public function getOrganisateur(): ?string
+    public function getCampus(): ?Campus
     {
-        return $this->organisateur;
+        return $this->campus;
     }
 
-    public function setOrganisateur(?string $organisateur): self
+    public function setCampus(?Campus $campus): self
     {
-        $this->organisateur = $organisateur;
+        $this->campus = $campus;
 
         return $this;
     }

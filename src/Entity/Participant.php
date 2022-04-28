@@ -117,13 +117,24 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Campus $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participant")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
      */
-    private Collection $sorties;
+    private $sorties;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+     */
+    private $orgaSortie;
+
+    
+
+
 
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+        $this->organisateur = new ArrayCollection();
+        $this->orgaSortie = new ArrayCollection();
     }
 
 
@@ -354,6 +365,66 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->sorties->removeElement($sorty)) {
             $sorty->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getOrganisateur(): Collection
+    {
+        return $this->organisateur;
+    }
+
+    public function addOrganisateur(Sortie $organisateur): self
+    {
+        if (!$this->organisateur->contains($organisateur)) {
+            $this->organisateur[] = $organisateur;
+            $organisateur->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisateur(Sortie $organisateur): self
+    {
+        if ($this->organisateur->removeElement($organisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($organisateur->getOrganisateur() === $this) {
+                $organisateur->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getOrgaSortie(): Collection
+    {
+        return $this->orgaSortie;
+    }
+
+    public function addOrgaSortie(Sortie $orgaSortie): self
+    {
+        if (!$this->orgaSortie->contains($orgaSortie)) {
+            $this->orgaSortie[] = $orgaSortie;
+            $orgaSortie->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrgaSortie(Sortie $orgaSortie): self
+    {
+        if ($this->orgaSortie->removeElement($orgaSortie)) {
+            // set the owning side to null (unless already changed)
+            if ($orgaSortie->getParticipant() === $this) {
+                $orgaSortie->setParticipant(null);
+            }
         }
 
         return $this;
