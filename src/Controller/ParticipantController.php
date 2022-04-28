@@ -48,17 +48,27 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/details", name="details", methods={"GET"}, requirements={"id": "\d+"})
+     * @Route("/{pseudo}/profil", name="profil", methods={"GET"})
      */
-    public function details(Participant $participant): Response
+    public function details(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        // Récupération du pseudo du participant
+        $pseudo = (string) $request->get('pseudo');
+
+        // Récupération du participant
+        $participant = $entityManager->getRepository('App:Participant')->findByPseudo($pseudo);
+        if (is_null($participant)) {
+            throw $this->createNotFoundException('Le participant n\'existe pas !');
+        }
+
         return $this->render('participant/detailprofil.html.twig', [
             'participant' => $participant,
         ]);
     }
 
     /**
-     * @Route("/{id}/modifier", name="modifier", methods={"GET", "POST"})
+     * @Route("/{pseudo}/modifier", name="modifier", methods={"GET", "POST"})
      */
     public function modifier(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {

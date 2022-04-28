@@ -1,8 +1,12 @@
 {% extends 'base.html.twig'%}
 
 {% block informations %}
+    {% if app.user == participant %}
+    <h1 class="jumbotron-heading text-center">Mon profil</h1>
+    {% else %}
     <h1 class="jumbotron-heading text-center">Profil de</h1>
     <h2 class="jumbotron-heading text-center">{{ participant.pseudo }}</h2>
+    {% endif %}
 {% endblock %}
 
 {% block main %}
@@ -32,8 +36,10 @@
             </tr>
             </tbody>
         </table>
-        <a href="{{ path('participant_modifier', {'id': participant.id }) }}" class="btn btn-warning">
-            Modifier profil</a>
+        {% if app.user == participant %}
+        <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo }) }}" class="btn btn-warning">
+            Modifier mon profil</a>
+        {% endif %}
     </div>
 
 {% endblock %}

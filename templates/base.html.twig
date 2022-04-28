@@ -25,7 +25,7 @@
                         <h4 class="text-white">Menu</h4>
                         <ul class="list-unstyled">
                             <li><a href="{{ path('accueil') }}" class="text-white">Accueil</a></li>
-                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Mon profil</a></li>
+                            <li><a href="{{ path('participant_profil', {'pseudo': app.user.pseudo }) }}" class="text-white">Mon profil</a></li>
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Créer une sortie</a></li>
                             {% if is_granted ('ROLE_ADMIN') %}
                             <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
@@ -39,7 +39,7 @@
         </div>
         <div class="collapse navbar-collapse navbar navbar-dark bg-dark box-shadow">
             <div class="container d-flex justify-content-between">
-                <a href="{{ path('securite_connexion') }}" class="navbar-brand d-flex align-items-center">
+                <a href="{{ path('accueil') }}" class="navbar-brand d-flex align-items-center">
                     <img src="{{ asset('img/sortir.png') }}" width="30px" class="mr-2">
                     <strong>SORTIR</strong>
                 </a>
