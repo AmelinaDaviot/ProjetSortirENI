@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}: Modification d'un participant{% endblock %}
+
+{% block informations %}
+    <h1 class="jumbotron-heading">Modifier le participant: {{ app.request.get('id') }}</h1><br/>
+{% endblock %}
+
+{% block main %}
+{#    {% for message in app.flashes('success') %}#}
+{#        <div class="alert alert-success text-center " role="alert">#}
+{#            <strong>{{ message }}</strong>#}
+{#        </div>#}
+{#    {% endfor %}#}
+    {% form_theme formCreateParticipant 'bootstrap_5_layout.html.twig' %}
+    {{ form(formCreateParticipant) }}
+{% endblock %}
