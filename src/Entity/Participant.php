@@ -126,8 +126,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $orgaSortie;
 
-    
-
 
 
     public function __construct()

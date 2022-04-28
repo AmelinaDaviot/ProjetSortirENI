@@ -96,7 +96,7 @@ class CampusController extends AbstractController
 //        $recherche = $request->query->get('recherche');
 //        $listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche);
 //        /*$listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche["nom"]);*/
-//        return $this->render("campus/index.html.twig", ["listeCampus" => $listeCampus, "rechercher" => $rechercher]);
+//        return $this->render("campus/listeParticipants.html.twig", ["listeCampus" => $listeCampus, "rechercher" => $rechercher]);
 //    }
 
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\InscriptionType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class InscriptionController extends AbstractController
 {
+
+    /**
+     * @Route("participants", name="participants", methods={"GET"})
+     */
+    public function listeParticipants(ParticipantRepository $participantRepository): Response
+    {
+        return $this->render('participant/listeParticipants.html.twig', [
+            'participants' => $participantRepository->findAll(),
+        ]);
+    }
+
     /**
      * @Route(path="inscription", name="inscription")
      */
