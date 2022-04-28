@@ -35,7 +35,7 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('campus');
         }
 
-        return $this->render('campus/new.html.twig', [
+        return $this->render('campus/create.html.twig', [
             'campus' => $campus,
             'form' => $form->createView(),
         ]);
@@ -65,7 +65,7 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('campus_index');
         }
 
-        return $this->render('campus/edit.html.twig', [
+        return $this->render('campus/modifier.html.twig', [
             'campus' => $campus,
             'form' => $form->createView(),
         ]);

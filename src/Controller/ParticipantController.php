@@ -5,18 +5,20 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/participant")
+ * @Route(path="/participant", name="participant_")
  */
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/", name="app_participant_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(ParticipantRepository $participantRepository): Response
     {
@@ -26,63 +28,75 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="app_participant_new", methods={"GET", "POST"})
+     * @Route("/create", name="create", methods={"GET", "POST"})
      */
-    public function new(Request $request, ParticipantRepository $participantRepository): Response
+    public function create(Request $request, ParticipantRepository $participantRepository): Response
     {
         $participant = new Participant();
-        $form = $this->createForm(ParticipantType::class, $participant);
-        $form->handleRequest($request);
+        $formCreateParticipant = $this->createForm(ParticipantType::class, $participant);
+        $formCreateParticipant->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCreateParticipant->isSubmitted() && $formCreateParticipant->isValid()) {
             $participantRepository->add($participant);
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('participant/new.html.twig', [
+        return $this->renderForm('participant/create.html.twig', [
             'participant' => $participant,
-            'form' => $form,
+            'formCreateParticipant' => $formCreateParticipant,
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="app_participant_show", methods={"GET"})
-     */
-    public function show(Participant $participant): Response
-    {
-        return $this->render('participant/show.html.twig', [
-            'participant' => $participant,
-        ]);
-    }
+//    /**
+//     * @Route("/{id}", name="show", methods={"GET"})
+//     */
+//    public function show(Participant $participant): Response
+//    {
+//        return $this->render('participant/show.html.twig', [
+//            'participant' => $participant,
+//        ]);
+//    }
 
     /**
-     * @Route("/{id}/edit", name="app_participant_edit", methods={"GET", "POST"})
+     * @Route("/{id}/modifier", name="modifier", methods={"GET", "POST"})
      */
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+    public function modifier(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
-        $form = $this->createForm(ParticipantType::class, $participant);
-        $form->handleRequest($request);
+        $formCreateParticipant = $this->createForm(ParticipantType::class, $participant);
+        $formCreateParticipant->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCreateParticipant->isSubmitted() && $formCreateParticipant->isValid()) {
             $participantRepository->add($participant);
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('participant/edit.html.twig', [
+        return $this->renderForm('participant/modifier.html.twig', [
             'participant' => $participant,
-            'form' => $form,
+            'formCreateParticipant' => $formCreateParticipant,
         ]);
     }
 
     /**
-     * @Route("/{id}", name="app_participant_delete", methods={"POST"})
+     * @Route(name="delete", path="{id}/delete", requirements={"id": "\d+"}, methods={"GET", "POST"})
      */
-    public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+    public function delete(EntityManagerInterface $entityManager, Request $request): RedirectResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->request->get('_token'))) {
-            $participantRepository->remove($participant);
+        // Récupération de l'identifiant du souhait
+        $id = (int) $request->get('id');
+
+        // Récupération du souhait
+        $participant = $entityManager->getRepository('App:Participant')->find($id);
+        if (is_null($participant)) {
+            throw $this->createNotFoundException('Participant non trouvé !');
         }
 
-        return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+        // Dissociation
+        $entityManager->remove($participant);
+
+        // Validation
+        $entityManager->flush();
+//        $this->addFlash("danger", "Le compte de ce participant a été supprimé avec succès.");
+
+        return $this->redirectToRoute("accueil");
     }
 }
