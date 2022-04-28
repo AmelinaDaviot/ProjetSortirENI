@@ -6,6 +6,7 @@ use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Services\SecuriteUrlService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,6 +54,8 @@ class ParticipantController extends AbstractController
     public function details(Request $request, EntityManagerInterface $entityManager): Response
     {
 
+//        dd($_SERVER["REQUEST_URI"]);
+//        dd($request->get('pseudo'));
         // Récupération du pseudo du participant
         $pseudo = (string) $request->get('pseudo');
 
@@ -70,8 +73,17 @@ class ParticipantController extends AbstractController
     /**
      * @Route("/{pseudo}/modifier", name="modifier", methods={"GET", "POST"})
      */
-    public function modifier(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
+    public function modifier(Request $request, Participant $participant, ParticipantRepository $participantRepository, SecuriteUrlService $securiteUrl): Response
     {
+        $debut = '/participant/';
+        $fin = '/modifier';
+        $dans = $_SERVER["REQUEST_URI"];
+
+        if($request->get('pseudo') != $securiteUrl->securiserUrl($debut, $fin, $dans))
+        {
+            return $this->render('participant/detailprofil.html.twig');
+        }
+
         $formCreateParticipant = $this->createForm(ParticipantType::class, $participant);
         $formCreateParticipant->handleRequest($request);
 
