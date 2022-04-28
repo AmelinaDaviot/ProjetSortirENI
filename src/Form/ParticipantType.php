@@ -65,14 +65,17 @@ class ParticipantType extends AbstractType
                 'choice_label' => 'nom',
             ])
 
-            ->add('plainPassword', PasswordType::class, [
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'required' => true,
                 'invalid_message' => 'Les mots de passe ne sont pas identiques',
-                'label' => 'Mot de passe',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'first_options' => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation du mot de passe'],
             ])
 
             ->add('submit', SubmitType::class, [
-                'label' => 'Inscrire',
+                'label' => 'Modifier',
             ]);
         ;
     }

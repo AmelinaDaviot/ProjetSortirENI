@@ -31,11 +31,9 @@
                 <td>{{ participant.campus.nom }}</td>
             </tr>
             </tbody>
-            <button type="button" class="btn btn-warning">
-                <a href="{{ path('', {'id': participant.id }) }}">Modifier mon profil</a>
-            </button>
-
         </table>
+        <a href="{{ path('participant_modifier', {'id': participant.id }) }}" class="btn btn-warning">
+            Modifier profil</a>
     </div>
 
 {% endblock %}

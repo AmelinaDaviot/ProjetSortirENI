@@ -47,15 +47,15 @@ class ParticipantController extends AbstractController
         ]);
     }
 
-//    /**
-//     * @Route("/{id}", name="show", methods={"GET"})
-//     */
-//    public function show(Participant $participant): Response
-//    {
-//        return $this->render('participant/show.html.twig', [
-//            'participant' => $participant,
-//        ]);
-//    }
+    /**
+     * @Route("/{id}/details", name="details", methods={"GET"}, requirements={"id": "\d+"})
+     */
+    public function details(Participant $participant): Response
+    {
+        return $this->render('participant/detailprofil.html.twig', [
+            'participant' => $participant,
+        ]);
+    }
 
     /**
      * @Route("/{id}/modifier", name="modifier", methods={"GET", "POST"})
@@ -99,4 +99,5 @@ class ParticipantController extends AbstractController
 
         return $this->redirectToRoute("accueil");
     }
+
 }
