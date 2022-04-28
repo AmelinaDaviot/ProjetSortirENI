@@ -117,15 +117,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Campus $campus;
 
     /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+     */
+    private $sortiesOrganisees;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
      */
     private $sorties;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
-     */
-    private $orgaSortie;
+    
 
+    
 
 
     public function __construct()
@@ -133,6 +136,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sorties = new ArrayCollection();
         $this->organisateur = new ArrayCollection();
         $this->orgaSortie = new ArrayCollection();
+        $this->sortiesOrganisees = new ArrayCollection();
     }
 
 
@@ -422,6 +426,36 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($orgaSortie->getParticipant() === $this) {
                 $orgaSortie->setParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSortiesOrganisees(): Collection
+    {
+        return $this->sortiesOrganisees;
+    }
+
+    public function addSortiesOrganisee(Sortie $sortiesOrganisee): self
+    {
+        if (!$this->sortiesOrganisees->contains($sortiesOrganisee)) {
+            $this->sortiesOrganisees[] = $sortiesOrganisee;
+            $sortiesOrganisee->setSortiesOrganisees($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesOrganisee(Sortie $sortiesOrganisee): self
+    {
+        if ($this->sortiesOrganisees->removeElement($sortiesOrganisee)) {
+            // set the owning side to null (unless already changed)
+            if ($sortiesOrganisee->getSortiesOrganisees() === $this) {
+                $sortiesOrganisee->setSortiesOrganisees(null);
             }
         }
 

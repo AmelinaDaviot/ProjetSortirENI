@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityRepository;
 use phpDocumentor\Reflection\Types\Null_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -33,7 +35,7 @@ class SortieType extends AbstractType
             ])
 
             ->add('duree', IntegerType::class,[
-                'label'=>'Durée en minutes',
+                'label'=>'Durée',
                 'required' =>true,
             ])
 
@@ -67,6 +69,22 @@ class SortieType extends AbstractType
                 ]
             ])
 
+
+            ->add('ville', EntityType::class, [
+                'label' => 'Ville : ',
+                'required' => true,
+                'class' => Ville::class,
+                'mapped' => false,
+                'query_builder' => function (VilleRepository $cr) {
+                    return $cr->createQueryBuilder('ville')
+                        ->orderBy('ville.nom', 'ASC');
+                },
+                'choice_label' => 'nom',
+                'placeholder' => '',
+            ])
+
+
+
 //            ->add('ville', EntityType::class, [
 //                'label' => 'Ville :',
 //                'class' => Ville::class,
@@ -82,12 +100,23 @@ class SortieType extends AbstractType
 //                'required' =>true,
 //            ])
 
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrer'
+            ->add("lieu", EntityType::class, [
+                "class"=> Lieu::class,
+                'label'=>'Lieu : ',
+                'attr' => array(
+                    'required'=>'required'
+                )
             ])
 
-            ->add('submit', SubmitType::class, [
-                'label' => 'Annuler'
+
+            ->add('save', SubmitType::class, [
+                'label' => 'Enregistrer',
+                'attr' => array('class' => 'btn bouton')
+            ])
+
+            ->add('saveAndPublish', SubmitType::class, [
+                'label' => 'Publier',
+                'attr' => array('class' => 'btn bouton')
             ]);
 
     }
