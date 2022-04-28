@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,46 +21,46 @@ class Sortie
     private $id;
 
     /**
-     * @ORM\Column(name="nom", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Le nom de la sortie doit être renseigné.")
      */
-    private ?string $nom;
+    private $nom;
 
     /**
-     * @ORM\Column(name="date_heure_debut", type="datetime")
+     * @ORM\Column(type="datetime")
      * @Assert\NotBlank(message="La date de début doit être renseignée.")
      */
-    private ?DateTimeInterface $dateHeureDebut;
+    private $dateHeureDebut;
 
     /**
-     * @ORM\Column(name="duree", type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type("integer",message="La durée doit être indiquée en chiffres.")
      * @Assert\NotBlank(message="La durée doit être renseignée.")
      * @Assert\GreaterThan(value=0,message="La durée, si elle est indiquée, doit être supérieur à 0 minutes.")
      */
-    private ?int $duree;
+    private $duree;
 
     /**
-     * @ORM\Column(name="nb_inscriptions_max", type="integer")
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Indiquez le nombre maximum de participants.")
      */
-    private ?int $nbInscriptionsMax;
+    private $nbInscriptionsMax;
 
     /**
-     * @ORM\Column(name="infos_sortie", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max="1000",maxMessage="Trop long, maximum 1000 caractères.")
      */
-    private ?string $infosSortie;
+    private $infosSortie;
 
     /**
-     * @ORM\Column(name="motif_annulation", type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $motifAnnulation;
+    private $motifAnnulation;
 
     /**
-     * @ORM\Column(name="date_limite_inscription", type="datetime")
+     * @ORM\Column(type="datetime")
      */
-    private ?DateTimeInterface $dateLimiteInscription;
+    private $dateLimiteInscription;
 
     /**
      * @ORM\ManyToMany(targetEntity=Participant::class, inversedBy="sorties")
@@ -70,157 +69,125 @@ class Sortie
 
     /**
      * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="orgaSortie")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?Participant $participant;
+    private $organisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="orgaSortie")
+     */
+    private $participant;
 
     /**
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
      */
-    private ?Lieu $lieu;
+    private $lieu;
 
     /**
      * @ORM\ManyToOne(targetEntity=Etat::class)
      */
-    private ?Etat $etat;
+    private $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Campus $campus;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Participant::class,inversedBy="sortiesOrganisees")
-     */
-    private ?Participant $organisateur;
-
-
+    private $campus;
+    
+    
 
     public function __construct()
     {
         $this->participants = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getNom(): ?string
     {
         return $this->nom;
     }
 
-
-    /**
-     * @param string $nom
-     */
-    public function setNom(string $nom): void
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getDateHeureDebut(): ?DateTimeInterface
+    public function getDateHeureDebut(): ?\DateTimeInterface
     {
         return $this->dateHeureDebut;
     }
 
-    /**
-     * @param DateTimeInterface $dateHeureDebut
-     */
-    public function setDateHeureDebut(DateTimeInterface $dateHeureDebut): void
+    public function setDateHeureDebut(\DateTimeInterface $dateHeureDebut): self
     {
         $this->dateHeureDebut = $dateHeureDebut;
+
+        return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getDuree(): ?int
     {
         return $this->duree;
     }
 
-    /**
-     * @param int|null $duree
-     */
-    public function setDuree(?int $duree): void
+    public function setDuree(?int $duree): self
     {
         $this->duree = $duree;
+
+        return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getNbInscriptionsMax(): ?int
     {
         return $this->nbInscriptionsMax;
     }
 
-    /**
-     * @param int $nbInscriptionsMax
-     */
-    public function setNbInscriptionsMax(int $nbInscriptionsMax): void
+    public function setNbInscriptionsMax(int $nbInscriptionsMax): self
     {
         $this->nbInscriptionsMax = $nbInscriptionsMax;
+
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getInfosSortie(): ?string
     {
         return $this->infosSortie;
     }
 
-    /**
-     * @param string|null $infosSortie
-     */
-    public function setInfosSortie(?string $infosSortie): void
+    public function setInfosSortie(?string $infosSortie): self
     {
         $this->infosSortie = $infosSortie;
+
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMotifAnnulation(): ?string
     {
         return $this->motifAnnulation;
     }
 
-    /**
-     * @param string|null $motifAnnulation
-     */
-    public function setMotifAnnulation(?string $motifAnnulation): void
+    public function setMotifAnnulation(?string $motifAnnulation): self
     {
         $this->motifAnnulation = $motifAnnulation;
+
+        return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getDateLimiteInscription(): ?DateTimeInterface
+    public function getDateLimiteInscription(): ?\DateTimeInterface
     {
         return $this->dateLimiteInscription;
     }
 
-    /**
-     * @param DateTimeInterface $dateLimiteInscription
-     */
-    public function setDateLimiteInscription(DateTimeInterface $dateLimiteInscription): void
+    public function setDateLimiteInscription(\DateTimeInterface $dateLimiteInscription): self
     {
         $this->dateLimiteInscription = $dateLimiteInscription;
+
+        return $this;
     }
 
     /**
@@ -231,117 +198,79 @@ class Sortie
         return $this->participants;
     }
 
-    /**
-     * @param Participant $participant
-     */
-    public function addParticipant(Participant $participant): void
+    public function addParticipant(Participant $participant): self
     {
         if (!$this->participants->contains($participant)) {
             $this->participants[] = $participant;
         }
+
+        return $this;
     }
 
-    /**
-     * @param Participant $participant
-     */
-    public function removeParticipant(Participant $participant): void
+    public function removeParticipant(Participant $participant): self
     {
         $this->participants->removeElement($participant);
+
+        return $this;
     }
 
-    /**
-     * @return Participant|null
-     */
     public function getOrganisateur(): ?Participant
     {
         return $this->organisateur;
     }
 
-    /**
-     * @param Participant|null $organisateur
-     */
-    public function setOrganisateur(?Participant $organisateur): void
+    public function setOrganisateur(?Participant $organisateur): self
     {
         $this->organisateur = $organisateur;
+
+        return $this;
     }
 
-    /**
-     * @return Participant|null
-     */
     public function getParticipant(): ?Participant
     {
         return $this->participant;
     }
 
-    /**
-     * @param Participant|null $participant
-     */
-    public function setParticipant(?Participant $participant): void
+    public function setParticipant(?Participant $participant): self
     {
         $this->participant = $participant;
+
+        return $this;
     }
 
-    /**
-     * @return Lieu|null
-     */
     public function getLieu(): ?Lieu
     {
         return $this->lieu;
     }
 
-    /**
-     * @param Lieu|null $lieu
-     */
-    public function setLieu(?Lieu $lieu): void
+    public function setLieu(?Lieu $lieu): self
     {
         $this->lieu = $lieu;
+
+        return $this;
     }
 
-    /**
-     * @return Etat|null
-     */
     public function getEtat(): ?Etat
     {
         return $this->etat;
     }
 
-    /**
-     * @param Etat|null $etat
-     */
-    public function setEtat(?Etat $etat): void
+    public function setEtat(?Etat $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
     }
 
-    /**
-     * @return Campus|null
-     */
     public function getCampus(): ?Campus
     {
         return $this->campus;
     }
 
-    /**
-     * @param Campus|null $campus
-     */
-    public function setCampus(?Campus $campus): void
+    public function setCampus(?Campus $campus): self
     {
         $this->campus = $campus;
-    }
 
-    /**
-     * @return Participant|null
-     */
-    public function getSortiesOrganisees(): ?Participant
-    {
-        return $this->sortiesOrganisees;
-    }
-
-    /**
-     * @param Participant|null $sortiesOrganisees
-     */
-    public function setSortiesOrganisees(?Participant $sortiesOrganisees): void
-    {
-        $this->sortiesOrganisees = $sortiesOrganisees;
+        return $this;
     }
 }
