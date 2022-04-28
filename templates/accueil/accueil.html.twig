@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block main %}
+
     <div class="row">
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
@@ -190,7 +191,8 @@
             </div>
         </div>
     </div>
-
+    {% if app.user %}
     <button type="button" class="btn btn-secondary btn-lg mb-5 mt-4">Créer une sortie</button>
+    {% endif %}
 
 {% endblock %}
