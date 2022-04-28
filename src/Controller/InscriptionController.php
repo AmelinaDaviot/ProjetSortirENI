@@ -19,15 +19,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class InscriptionController extends AbstractController
 {
 
-    /**
-     * @Route("participants", name="participants", methods={"GET"})
-     */
-    public function listeParticipants(ParticipantRepository $participantRepository): Response
-    {
-        return $this->render('participant/listeParticipants.html.twig', [
-            'participants' => $participantRepository->findAll(),
-        ]);
-    }
+/**
+* @Route("participants", name="participants", methods={"GET"})
+*/
+public function listeParticipants(ParticipantRepository $participantRepository): Response
+{
+    return $this->render('participant/listeParticipants.html.twig', [
+        'participants' => $participantRepository->findAll(),
+    ]);
+}
 
     /**
      * @Route(path="inscription", name="inscription")
