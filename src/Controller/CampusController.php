@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Campus;
-use App\Repository\CampusRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,7 +35,7 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('campus');
         }
 
-        return $this->render('new.html.twig', [
+        return $this->render('campus/create.html.twig', [
             'campus' => $campus,
             'form' => $form->createView(),
         ]);
@@ -67,7 +65,7 @@ class CampusController extends AbstractController
             return $this->redirectToRoute('campus_index');
         }
 
-        return $this->render('campus/edit.html.twig', [
+        return $this->render('campus/modifier.html.twig', [
             'campus' => $campus,
             'form' => $form->createView(),
         ]);
@@ -86,6 +84,19 @@ class CampusController extends AbstractController
         }
 
         return $this->redirectToRoute('campus_index');
+    }
+
+    /**
+     * @Route("/recherche/", name="campus_recherche", methods={"GET"})
+     */
+    public function rechercher(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $rechercher = true;
+        $request = Request::createFromGlobals();
+        $recherche = $request->query->get('recherche');
+        $listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche);
+        /*$listeCampus = $entityManager->getRepository('App:Campus')->getByMotCle($recherche["nom"]);*/
+        return $this->render("campus/index.html.twig", ["listeCampus" => $listeCampus, "rechercher" => $rechercher]);
     }
 
 

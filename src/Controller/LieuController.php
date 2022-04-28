@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Lieu;
-use App\Form\LieuType;
+use App\Entity\Ville;
 use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,17 +13,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class LieuController extends AbstractController
 {
     /**
-     * @Route("/lieu", name="location_index", methods={"GET"})
+     * @Route("/lieu", name="lieu")
      */
-    public function index(LocationRepository $locationRepository): Response
+    public function index(): Response
     {
-        return $this->render('location/index.html.twig', [
-            'locations' => $locationRepository->findAll(),
+        return $this->render('lieu/home.html.twig', [
+            'controller_name' => 'LieuController',
+        ]);
+   }
+    /**
+     * @Route("/recherche", name="lieu_recherche", methods={"GET"})
+     */
+    public function lieu_search(LieuRepository $lieuRepository): Response
+    {
+
+        return $this->render('lieu/home.html.twig', [
+            'lieu' => $lieuRepository->findAll(),
         ]);
     }
-
     /**
-     * @Route("/new", name="lieu_new", methods={"GET","POST"})
+     * @Route("/nouveau", name="lieu_nouveau", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -38,54 +48,11 @@ class LieuController extends AbstractController
             return $this->redirectToRoute('lieu');
         }
 
-        return $this->render('new.html.twig', [
-            'lieu' => $lieu,
-            'form' => $form->createView(),
-        ]);
-    }
-    /**
-     * @Route("/{id}/show", name="lieu_show", methods={"GET"})
-     */
-    public function show(Lieu $lieu): Response
-    {
-        return $this->render('lieu/show.html.twig', [
-            'lieu' => $lieu,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="lieu_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Lieu $lieu): Response
-    {
-        $form = $this->createForm(lieuType::class, $lieu);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash("success", "Le lieu vient d'être modifié");
-            return $this->redirectToRoute('lieu_index');
-        }
-
-        return $this->render('lieu/edit.html.twig', [
+        return $this->render('lieu/create.html.twig', [
             'lieu' => $lieu,
             'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="lieu_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Lieu $lieu): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($lieu);
-            $entityManager->flush();
-            $this->addFlash("danger", "Le lieu vient d'être supprimé");
-        }
-
-        return $this->redirectToRoute('lieu_index');
-    }
 
 }
