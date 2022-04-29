@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
+    {{ parent() }}
 {% endblock %}
 
 {% block informations %}
     <h1 class="jumbotron-heading text-center">Sorties organisées</h1>
 {% endblock %}
+
+
 
 {% block main %}
 
@@ -192,7 +195,7 @@
         </div>
     </div>
     {% if app.user %}
-    <button type="button" class="btn btn-secondary btn-lg mb-5 mt-4">Créer une sortie</button>
+    <a href="{{ path('app_sortie_new') }}" type="button" class="btn btn-secondary btn-lg mb-5 mt-4">Créer une sortie</a>
     {% endif %}
 
 {% endblock %}

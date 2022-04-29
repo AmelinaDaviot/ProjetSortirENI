@@ -28,7 +28,7 @@
                             {% if app.user%}
                             <li><a href="{{ path('participant_profil', {'pseudo': app.user.pseudo }) }}" class="text-white">Mon profil</a></li>
                             {% endif %}
-                            <li><a href="{{ path('securite_connexion') }}" class="text-white">Créer une sortie</a></li>
+                            <li><a href="{{ path('app_sortie_new') }}" class="text-white">Créer une sortie</a></li>
                             {% if is_granted ('ROLE_ADMIN') %}
                                 <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
                                 <li><a href="{{ path('securite_connexion') }}" class="text-white">Campus</a></li>
@@ -54,7 +54,9 @@
                         <div class="navbar-brand d-flex align-items-center justify-content-end dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{ app.user.pseudo|capitalize }}</div>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ path('securite_deconnexion') }}" class="dropdown-item"><i class="fa-regular fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+                            <a href="{{ path('participant_profil', {'pseudo': app.user.pseudo }) }}" class="dropdown-item"><img src="{{ asset('img/profil.png') }}" width="30px" class="mr-2"> Mon profil</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ path('securite_deconnexion') }}" class="dropdown-item"><img src="{{ asset('img/se-deconnecter.png') }}" width="25px" class="mr-2"> Déconnexion</a>
                         </div>
                     </div>
                 {% else %}

@@ -7,8 +7,12 @@ class SecuriteUrlService
 {
 
 
-//    private $dans = $_SERVER["REQUEST_URI"];
-
+    /**
+     * @param string|null $participantUri
+     * @param string|null $modifier
+     * @param string|null $uri
+     * @return $trouverPseudo : extrait le pseudo dans l'URL
+     */
     public function securiserUrl(?string $participantUri, ?string $modifier, ?string $uri){
 
 //        $extraction = strpos($uri, $modifier);
@@ -20,28 +24,37 @@ class SecuriteUrlService
 //        $extraction2 = strpos($uri, $participantUri);
 //        $separation2 = substr($trouverPseudo, 0, -$extraction2);
 
-//        $sep = substr($uri, strpos($uri, $participantUri) +  strlen($participantUri));
-//        $sep2 = substr($uri, 0, strpos($uri, $modifier));
+        $sep = substr($uri, strpos($uri, $participantUri) +  strlen($participantUri));
+        $sep2 = substr($uri, 0, strpos($uri, $modifier));
         $trouverPseudo = $this->before($modifier, $this->after($participantUri, $uri));
 
 
 
 //        dd($separation1, $participantUri);
 //        dd($sep, $sep2, $sepfinale, $extraction2, $separation1, $separation2, $trouverPseudo);
+//        dd($sep, $sep2);
 
         return $trouverPseudo;
     }
 
-//    public function recupUri(){ return $_SERVER["REQUEST_URI"]; }
-
-
+    /**
+     * @param string|null $participantUri
+     * @param string|null $uri
+     * @return false|string|void
+     * Retourne '{pseudo}/modifier'
+     */
     public function after (?string $participantUri, ?string $uri)
     {
         if (!is_bool(stripos($uri, $participantUri)))
             return substr($uri, stripos($uri, $participantUri) +  strlen($participantUri));
     }
 
-
+    /**
+     * @param string|null $modifier
+     * @param string|null $uri
+     * @return false|string
+     * Retourne '/participant/{pseudo}
+     */
     public function before (?string $modifier, ?string $uri)
     {
         return substr($uri, 0, stripos($uri, $modifier));

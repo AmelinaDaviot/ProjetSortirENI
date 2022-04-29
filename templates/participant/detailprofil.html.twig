@@ -1,11 +1,19 @@
 {% extends 'base.html.twig'%}
 
+{% block title%}
+    {% if app.user == participant %}
+        Mon profil
+    {% else %}
+        Profil de {{ participant.pseudo|capitalize }}
+    {% endif %}
+{% endblock %}
+
 {% block informations %}
     {% if app.user == participant %}
     <h1 class="jumbotron-heading text-center">Mon profil</h1>
     {% else %}
-    <h1 class="jumbotron-heading text-center">Profil de</h1>
-    <h2 class="jumbotron-heading text-center">{{ participant.pseudo }}</h2>
+    <h1 class="jumbotron-heading text-center">Profil de {{ participant.pseudo|capitalize }}</h1>
+    <h2 class="jumbotron-heading text-center"></h2>
     {% endif %}
 {% endblock %}
 
@@ -36,10 +44,18 @@
             </tr>
             </tbody>
         </table>
+        <div class="col text-center mb-3 mt-3">
+            <a href="{{ path('accueil') }}" class="btn btn-primary mr-3">
+                Retour</a>
+
         {% if app.user == participant %}
+
+
+
         <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo }) }}" class="btn btn-warning">
             Modifier mon profil</a>
         {% endif %}
+            </div>
     </div>
 
 {% endblock %}

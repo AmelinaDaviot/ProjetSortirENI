@@ -69,18 +69,18 @@ class ParticipantController extends AbstractController
         $participantUri = '/participant/';
         $modifier = '/modifier';
         $uri = $_SERVER["REQUEST_URI"];
+//        dd($participant->getPseudo(), $request->get('pseudo'), $this->getUser()->getUserIdentifier());
 
+        /**
+         * Si le pseudo du participant connecté n'est pas égal au pseudo écrit dans l'URL : redirection vers le détail du profil
+         * On sécurise l'accès à la page modifier des profils des autres utilisateurs
+         */
+        if ($this->getUser()->getUserIdentifier() != $securiteUrl->securiserUrl($participantUri, $modifier, $uri)){
+            return $this->render('participant/detailprofil.html.twig', [
+                'participant' => $participant,
+            ]);
+        }
 
-//        dd($participant->getPseudo(), $request->get('pseudo'), $this->getUser());
-//
-//        if ($participant->getPseudo() != $securiteUrl->securiserUrl($participantUri, $modifier, $uri)){
-//            return $this->render('participant/detailprofil.html.twig');
-//        }
-
-//        if($request->get('pseudo') != $securiteUrl->securiserUrl($participantUri, $modifier, $uri))
-//        {
-//            return $this->render('participant/detailprofil.html.twig');
-//        }
 
         $formCreateParticipant = $this->createForm(ParticipantType::class, $participant);
         $formCreateParticipant->handleRequest($request);

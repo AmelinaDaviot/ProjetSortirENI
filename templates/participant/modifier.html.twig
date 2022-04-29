@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }}: Modification d'un participant{% endblock %}
+{% block title %}Modifier mon profil{% endblock %}
 
 {% block informations %}
-    <h1 class="jumbotron-heading">Modifier le participant: {{ app.request.get('id') }}</h1><br/>
+    <h1 class="jumbotron-heading text-center">Modifier mon profil {{ app.request.get('id') }}</h1><br/>
 {% endblock %}
 
 {% block main %}
