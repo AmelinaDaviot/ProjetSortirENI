@@ -31,7 +31,7 @@
                 <td>{{ participant.prenom }}</td>
                 <td>{{ participant.telephone }}</td>
                 <td>
-                    <a href="{{ path('participant_modifier', {'id': participant.id}) }}">edit</a>
+                    <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

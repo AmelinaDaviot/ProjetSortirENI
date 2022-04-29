@@ -18,15 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ParticipantController extends AbstractController
 {
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
-    public function index(ParticipantRepository $participantRepository): Response
-    {
-        return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findAll(),
-        ]);
-    }
 
     /**
      * @Route("/create", name="create", methods={"GET", "POST"})
@@ -39,7 +30,7 @@ class ParticipantController extends AbstractController
 
         if ($formCreateParticipant->isSubmitted() && $formCreateParticipant->isValid()) {
             $participantRepository->add($participant);
-            return $this->redirectToRoute('participant_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('participant_details', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('participant/create.html.twig', [

@@ -28,15 +28,15 @@ class ParticipantType extends AbstractType
             ])
 
             ->add('prenom', TextType::class,[
-                'required' => true,
+                'disabled' => true,
                 'label' => 'Prénom',
-                'attr' => ['placeHolder' => 'Prénom'],
+//                'attr' => ['placeHolder' => 'Prénom'],
             ])
 
             ->add('nom', TextType::class,[
-                'required' => true,
+                'disabled' => true,
                 'label' => 'Nom',
-                'attr' => ['placeHolder' => 'Nom'],
+//                'attr' => ['placeHolder' => 'Nom'],
             ])
 
             ->add('telephone', TelType::class,[
@@ -53,7 +53,7 @@ class ParticipantType extends AbstractType
             ])
 
             ->add('campus', EntityType::class,[
-                'required' => true,
+                'disabled' => true,
                 'label' => 'Campus',
                 'class' => Campus::class,
                 'attr' => ['class' => 'form-control'],

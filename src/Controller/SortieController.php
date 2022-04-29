@@ -31,17 +31,17 @@ class SortieController extends AbstractController
     public function new(Request $request, SortieRepository $sortieRepository): Response
     {
         $sortie = new Sortie();
-        $form = $this->createForm(SortieType::class, $sortie);
-        $form->handleRequest($request);
+        $formCreateSortie = $this->createForm(SortieType::class, $sortie);
+        $formCreateSortie->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()) {
             $sortieRepository->add($sortie);
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('sortie/new.html.twig', [
             'sortie' => $sortie,
-            'form' => $form,
+            'formCreateSortie' => $formCreateSortie,
         ]);
     }
 
@@ -60,17 +60,17 @@ class SortieController extends AbstractController
      */
     public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
-        $form = $this->createForm(SortieType::class, $sortie);
-        $form->handleRequest($request);
+        $formCreateSortie = $this->createForm(SortieType::class, $sortie);
+        $formCreateSortie->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCreateSortie->isSubmitted() && $formCreateSortie->isValid()) {
             $sortieRepository->add($sortie);
             return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('sortie/edit.html.twig', [
             'sortie' => $sortie,
-            'form' => $form,
+            'formCreateSortie' => $formCreateSortie,
         ]);
     }
 

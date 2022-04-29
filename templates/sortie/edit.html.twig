@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Sortie{% endblock %}
+{% block title %}Modification Sortie{% endblock %}
+
+{%  block informations %}
+    <h1 class="jumbotron-heading text-center">Modifier la sortie</h1>
+    <h1 class="jumbotron-header text-center"><strong>{{ sortie.nom }}</strong></h1>
+{% endblock %}
 
 {% block main %}
-    <h1>Edit Sortie</h1>
 
-    {{ include('sortie/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
 
-    {{ include('sortie/_delete_form.html.twig') }}
+    {% form_theme formCreateSortie 'bootstrap_5_layout.html.twig' %}
+    {{ form(formCreateSortie) }}
 {% endblock %}
