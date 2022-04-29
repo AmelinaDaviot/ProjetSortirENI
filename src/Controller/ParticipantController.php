@@ -75,14 +75,21 @@ class ParticipantController extends AbstractController
      */
     public function modifier(Request $request, Participant $participant, ParticipantRepository $participantRepository, SecuriteUrlService $securiteUrl): Response
     {
-        $debut = '/participant/';
-        $fin = '/modifier';
-        $dans = $_SERVER["REQUEST_URI"];
+        $participantUri = '/participant/';
+        $modifier = '/modifier';
+        $uri = $_SERVER["REQUEST_URI"];
 
-        if($request->get('pseudo') != $securiteUrl->securiserUrl($debut, $fin, $dans))
-        {
-            return $this->render('participant/detailprofil.html.twig');
-        }
+
+//        dd($participant->getPseudo(), $request->get('pseudo'), $this->getUser());
+//
+//        if ($participant->getPseudo() != $securiteUrl->securiserUrl($participantUri, $modifier, $uri)){
+//            return $this->render('participant/detailprofil.html.twig');
+//        }
+
+//        if($request->get('pseudo') != $securiteUrl->securiserUrl($participantUri, $modifier, $uri))
+//        {
+//            return $this->render('participant/detailprofil.html.twig');
+//        }
 
         $formCreateParticipant = $this->createForm(ParticipantType::class, $participant);
         $formCreateParticipant->handleRequest($request);
