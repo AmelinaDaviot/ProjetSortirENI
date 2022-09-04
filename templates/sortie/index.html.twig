@@ -31,8 +31,8 @@
                 <td>{{ sortie.motifAnnulation }}</td>
                 <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_sortie_show', {'id': sortie.id}) }}">apercu</a>
-                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">modifier</a>
+                    <a href="{{ path('sortie_details', {'id': sortie.id}) }}">apercu</a>
+                    <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -43,5 +43,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_sortie_new') }}">Creer nouveau</a>
+    <a href="{{ path('sortie_creer') }}">Creer nouveau</a>
 {% endblock %}

@@ -8,6 +8,7 @@ use App\Repository\CampusRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ParticipantType extends AbstractType
 {
@@ -65,17 +67,29 @@ class ParticipantType extends AbstractType
                 'choice_label' => 'nom',
             ])
 
-            ->add('plainPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
+            ->add('plainPassword', PasswordType::class, [
                 'required' => true,
-                'invalid_message' => 'Les mots de passe ne sont pas identiques',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmation du mot de passe'],
+                'label' => 'Saisir le mot de passe pour valider',
+                'attr' => ['placeHolder' => 'Mot de passe'],
+            ])
+
+            ->add('photo', FileType::class, [
+                'label' => 'Photo (PNG, JPG, BMP)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/*'
+                        ],
+                        'mimeTypesMessage' => 'Merci de sélectionner un fichier image.',
+                    ])
+                ],
             ])
 
             ->add('submit', SubmitType::class, [
-                'label' => 'Modifier',
+                'label' => 'Enregistrer',
             ]);
         ;
     }

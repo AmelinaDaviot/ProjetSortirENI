@@ -1,14 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Inscription utilisateur{% endblock %}
 
 {% block informations %}
-    <h1 class="jumbotron-heading text-center">Inscription d'un nouveau participant</h1><br>
+    <h1 class="jumbotron-heading text-center">Inscrire un nouvel utilisateur {{ app.request.get('id') }}</h1><br/>
 {% endblock %}
 
 {% block main %}
 
+    {{ include('accueil/messageFlash.html.twig') }}
+
     {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
-    {{ form(registrationForm)}}
+        {{ form_start(registrationForm) }}
+            <div class="row g-3 align-items-center mb-4">
+                <div class="col-2">
+                    <strong>{{ form_label(registrationForm.pseudo) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.pseudo) }}
+                    {{ form_errors(registrationForm.pseudo) }}
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-1">
+                    <strong>{{ form_label(registrationForm.telephone) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.telephone) }}
+                    {{ form_errors(registrationForm.telephone) }}
+                </div>
+            </div>
+            <div class="row g-3 align-items-center mb-4">
+                <div class="col-2">
+                    <strong>{{ form_label(registrationForm.prenom) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.prenom) }}
+                    {{ form_errors(registrationForm.prenom) }}
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-1">
+                    <strong>{{ form_label(registrationForm.email) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.email) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+            </div>
+            <div class="row g-3 align-items-center mb-5">
+                <div class="col-2">
+                    <strong>{{ form_label(registrationForm.nom) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.nom) }}
+                    {{ form_errors(registrationForm.nom) }}
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-1">
+                    <strong>{{ form_label(registrationForm.campus) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.campus) }}
+                    {{ form_errors(registrationForm.campus) }}
+                </div>
+            </div>
+
+
+            <div class="row g-3 align-items-center mb-5">
+                <div class="col-3">
+                </div>
+                <div class="col-2">
+                    <strong>{{ form_label(registrationForm.plainPassword.first) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.plainPassword.first) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+            </div>
+            <div class="row g-3 align-items-center mb-5">
+                <div class="col-3">
+                </div>
+                <div class="col-2">
+                    <strong>{{ form_label(registrationForm.plainPassword.second) }}</strong>
+                </div>
+                <div class="col-4">
+                    {{ form_widget(registrationForm.plainPassword.second) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+            </div>
+
+                <div class="col-md-11 col-md-offset-4 text-center">
+                    {{ form_row(registrationForm.submit, {'attr': {'class': 'btn btn-primary btn-lg mr-3'}}) }}
+                </div>
+    {{ form_end(registrationForm) }}
 
 {% endblock %}

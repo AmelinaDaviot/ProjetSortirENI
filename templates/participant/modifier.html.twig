@@ -7,11 +7,109 @@
 {% endblock %}
 
 {% block main %}
-{#    {% for message in app.flashes('success') %}#}
-{#        <div class="alert alert-success text-center " role="alert">#}
-{#            <strong>{{ message }}</strong>#}
-{#        </div>#}
-{#    {% endfor %}#}
+
+    {{ include('accueil/messageFlash.html.twig') }}
+
     {% form_theme formCreateParticipant 'bootstrap_5_layout.html.twig' %}
-    {{ form(formCreateParticipant) }}
+
+    {{ form_start(formCreateParticipant) }}
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-2">
+                <strong>{{ form_label(formCreateParticipant.pseudo) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.pseudo) }}
+                {{ form_errors(formCreateParticipant.pseudo) }}
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-1">
+                <strong>{{ form_label(formCreateParticipant.telephone) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.telephone) }}
+                {{ form_errors(formCreateParticipant.telephone) }}
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-2">
+                <strong>{{ form_label(formCreateParticipant.prenom) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.prenom) }}
+                {{ form_errors(formCreateParticipant.prenom) }}
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-1">
+                <strong>{{ form_label(formCreateParticipant.email) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.email) }}
+                {{ form_errors(formCreateParticipant.email) }}
+            </div>
+        </div>
+        <div class="row g-3 align-items-center mb-5">
+            <div class="col-2">
+                <strong>{{ form_label(formCreateParticipant.nom) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.nom) }}
+                {{ form_errors(formCreateParticipant.nom) }}
+            </div>
+            <div class="col-1">
+            </div>
+            <div class="col-1">
+                <strong>{{ form_label(formCreateParticipant.campus) }}</strong>
+            </div>
+            <div class="col-4">
+                {{ form_widget(formCreateParticipant.campus) }}
+                {{ form_errors(formCreateParticipant.campus) }}
+            </div>
+        </div>
+
+        <div class="row g-3 align-items-center mb-4">
+            <div class="col-2">
+            </div>
+            <div class="col-3">
+               <strong> {{ form_label(formCreateParticipant.photo) }}</strong>
+            </div>
+            <div class="col-5">
+                {{ form_widget(formCreateParticipant.photo) }}
+                {{ form_errors(formCreateParticipant.photo) }}
+            </div>
+            <div class="col-2">
+            </div>
+        </div>
+
+        <div class="row g-3 align-items-center mb-5">
+            <div class="col-2">
+            </div>
+            <div class="col-3">
+               <strong> {{ form_label(formCreateParticipant.plainPassword) }}</strong>
+            </div>
+            <div class="col-5">
+                {{ form_widget(formCreateParticipant.plainPassword) }}
+                {{ form_errors(formCreateParticipant.plainPassword) }}
+            </div>
+            <div class="col-2">
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4 col-md-offset-4 text-center">
+        <a href="{{ path('participant_profil', {'pseudo': participant.pseudo }) }}" class="btn btn-primary btn-lg mr-3">
+            Retour</a>
+            </div>
+        <div class="col-md-4 col-md-offset-4 text-center">
+        {{ form_row(formCreateParticipant.submit, {'attr': {'class': 'btn btn-success btn-lg mr-3'}}) }}
+        </div>
+        <div class="col-md-4 col-md-offset-4 text-center">
+        <a href="{{ path('participant_modifier_password') }}" class="btn btn-warning btn-lg mr-3">
+            Modifier mon mot de passe</a>
+        </div>
+        </div>
+
+    {{ form_end(formCreateParticipant) }}
+
 {% endblock %}

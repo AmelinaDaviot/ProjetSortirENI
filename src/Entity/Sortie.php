@@ -19,7 +19,7 @@ class Sortie
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(name="nom", type="string", length=255)
@@ -29,6 +29,7 @@ class Sortie
 
     /**
      * @ORM\Column(name="date_heure_debut", type="datetime")
+     * @Assert\GreaterThan("today", message="La date de la sortie doit être égale à la date du jour ou plus tard.")
      * @Assert\NotBlank(message="La date de début doit être renseignée.")
      */
     private ?DateTimeInterface $dateHeureDebut;
@@ -37,13 +38,14 @@ class Sortie
      * @ORM\Column(name="duree", type="integer", nullable=true)
      * @Assert\Type("integer",message="La durée doit être indiquée en chiffres.")
      * @Assert\NotBlank(message="La durée doit être renseignée.")
-     * @Assert\GreaterThan(value=0,message="La durée, si elle est indiquée, doit être supérieur à 0 minutes.")
+     * @Assert\GreaterThan(value=0, message="La durée doit être supérieur à 0 minute.")
      */
     private ?int $duree;
 
     /**
      * @ORM\Column(name="nb_inscriptions_max", type="integer")
      * @Assert\NotBlank(message="Indiquez le nombre maximum de participants.")
+     * @Assert\Positive(message="Le nombre d'inscriptions maximum doit être supérieur à 0.")
      */
     private ?int $nbInscriptionsMax;
 
@@ -60,40 +62,40 @@ class Sortie
 
     /**
      * @ORM\Column(name="date_limite_inscription", type="datetime")
+     * @Assert\GreaterThan("today +2 hours", message="La date limite des inscriptions doit être au minimum prévue 2 heures après la date de début.")
+     * @Assert\NotBlank(message="La date limite d'inscription doit être renseignée.")
      */
     private ?DateTimeInterface $dateLimiteInscription;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Participant::class, inversedBy="sorties")
+     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="sorties")
      */
     private Collection $participants;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="orgaSortie")
-     */
-    private ?Participant $participant;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private ?Lieu $lieu;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Etat::class)
-     */
-    private ?Etat $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private ?Campus $campus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Participant::class,inversedBy="sortiesOrganisees")
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesOrganisees")
+     * @ORM\JoinColumn(nullable=false)
      */
     private ?Participant $organisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="etatSorties")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Etat $etat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?Lieu $lieu=null;
 
 
 
@@ -239,6 +241,7 @@ class Sortie
         if (!$this->participants->contains($participant)) {
             $this->participants[] = $participant;
         }
+
     }
 
     /**
@@ -265,53 +268,7 @@ class Sortie
         $this->organisateur = $organisateur;
     }
 
-    /**
-     * @return Participant|null
-     */
-    public function getParticipant(): ?Participant
-    {
-        return $this->participant;
-    }
-
-    /**
-     * @param Participant|null $participant
-     */
-    public function setParticipant(?Participant $participant): void
-    {
-        $this->participant = $participant;
-    }
-
-    /**
-     * @return Lieu|null
-     */
-    public function getLieu(): ?Lieu
-    {
-        return $this->lieu;
-    }
-
-    /**
-     * @param Lieu|null $lieu
-     */
-    public function setLieu(?Lieu $lieu): void
-    {
-        $this->lieu = $lieu;
-    }
-
-    /**
-     * @return Etat|null
-     */
-    public function getEtat(): ?Etat
-    {
-        return $this->etat;
-    }
-
-    /**
-     * @param Etat|null $etat
-     */
-    public function setEtat(?Etat $etat): void
-    {
-        $this->etat = $etat;
-    }
+   
 
     /**
      * @return Campus|null
@@ -329,19 +286,27 @@ class Sortie
         $this->campus = $campus;
     }
 
-    /**
-     * @return Participant|null
-     */
-    public function getSortiesOrganisees(): ?Participant
+    public function getEtat(): ?Etat
     {
-        return $this->sortiesOrganisees;
+        return $this->etat;
     }
 
-    /**
-     * @param Participant|null $sortiesOrganisees
-     */
-    public function setSortiesOrganisees(?Participant $sortiesOrganisees): void
+    public function setEtat(?Etat $etat): self
     {
-        $this->sortiesOrganisees = $sortiesOrganisees;
+        $this->etat = $etat;
+        return $this;
     }
+
+    public function getLieu(): ?Lieu
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(?Lieu $lieu): void
+    {
+        $this->lieu = $lieu;
+
+    }
+
+
 }

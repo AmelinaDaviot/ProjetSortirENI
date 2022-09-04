@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Modifier mon mot de passe
+{% endblock %}
+
+{% block informations %}
+    <h1 class="jumbotron-heading text-center">Modifier mon mot de passe</h1><br/>
+{% endblock %}
+
+
+{% block main %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning text-center " role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+    {% endfor %}
+    {% form_theme formModifMdp 'bootstrap_5_layout.html.twig' %}
+{#    {{ form(formModifMdp) }}#}
+    {{ form_start(formModifMdp) }}
+    <div class="row g-3 align-items-center mb-5">
+        <div class="col-3">
+        </div>
+        <div class="col-2">
+            <strong>{{ form_label(formModifMdp.oldPassword) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formModifMdp.oldPassword) }}
+            {{ form_errors(formModifMdp.newPassword.second) }}
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-5">
+        <div class="col-3">
+        </div>
+        <div class="col-2">
+            <strong>{{ form_label(formModifMdp.newPassword.first) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formModifMdp.newPassword.first) }}
+            {{ form_errors(formModifMdp.newPassword.first) }}
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-5">
+        <div class="col-3">
+        </div>
+        <div class="col-2">
+            <strong>{{ form_label(formModifMdp.newPassword.second) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formModifMdp.newPassword.second) }}
+            {{ form_errors(formModifMdp.newPassword.second) }}
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-1 col-md-offset-4 text-center">
+
+        </div>
+        <div class="col-md-6 col-md-offset-4 text-center">
+            {{ form_row(formModifMdp.submit) }}
+        </div>
+        {{ form_end(formModifMdp) }}
+        <div class="col-md-1 col-md-offset-4 text-center">
+            <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo }) }}" class="btn btn-primary btn-lg mr-3">
+                Retour</a>
+        </div>
+
+    </div>
+
+
+{% endblock %}
+

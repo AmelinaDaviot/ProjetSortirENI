@@ -1,26 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Campus liste{% endblock %}
+{% block title %}Campus index{% endblock %}
 
-{% block body %}
-    <h1>Campus index</h1>
+{% block informations %}
+    <h1 class="jumbotron-heading text-center">Gérer les Campus</h1>
+{% endblock %}
 
-    <table class="table">
+
+{% block main %}
+    <h2>Filtrer les Campus</h2>
+
+    <table class="table caption-top">
+        {#        <caption>List of users</caption>#}
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>actions</th>
+            <th scope="col">#</th>
+            <th scope="col">Campus</th>
+            <th scope="col">Modifier/Supprimer</th>
         </tr>
         </thead>
         <tbody>
-        {% for campus in campuses %}
+        {% for campus in campus %}
             <tr>
                 <td>{{ campus.id }}</td>
-                <td>{{ campus.name }}</td>
+                <td>{{ campus.nom }}</td>
                 <td>
-                    <a href="{{ path('campus_show', {'id': campus.id}) }}">apercu</a>
-                    <a href="{{ path('campus_edit', {'id': campus.id}) }}">modifier</a>
+                    &emsp;&emsp;<a href="{{ path('campus_edit', { 'id': campus.id }) }}" alt="Modifier" title="Modifier"  class="btn btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>&ensp;
+                    <a href="{{ path('campus_delete', { 'id': campus.id }) }}" alt="Supprimer" title="Supprimer" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +37,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('campus_new') }}">Créer nouveau</a>
+    <a href="{{ path('campus_new') }}"type="button" class="btn btn-secondary btn-lg mb-5 mt-4">Ajouter un campus</a>
+
 {% endblock %}

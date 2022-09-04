@@ -24,7 +24,7 @@ class InscriptionType extends AbstractType
             ->add('pseudo', TextType::class,[
                 'required' => true,
                 'label' => 'Pseudo',
-                'attr' => ['placeHolder' => 'Pseudo'],
+                'attr' => ['placeHolder' => 'Pseudo']
             ])
 
             ->add('prenom', TextType::class,[
@@ -50,6 +50,7 @@ class InscriptionType extends AbstractType
                 'required' => true,
                 'label' => 'Email',
                 'attr' => ['placeHolder' => 'Adresse email'],
+                'help' => 'N\'oubliez pas de communiquer ce mot de passe à l\'\'utilisateur'
             ])
 
             ->add('plainPassword', RepeatedType::class, [

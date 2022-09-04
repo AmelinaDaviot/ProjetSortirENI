@@ -1,17 +1,139 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modification Sortie{% endblock %}
+{% block title %}Modification de la sortie{% endblock %}
 
 {%  block informations %}
     <h1 class="jumbotron-heading text-center">Modifier la sortie</h1>
-    <h1 class="jumbotron-header text-center"><strong>{{ sortie.nom }}</strong></h1>
+    <h4 class="jumbotron-header text-center"><i>{{ sortie.nom|title }}</i></h4>
 {% endblock %}
 
 {% block main %}
 
 
-    <a href="{{ path('app_sortie_index') }}">back to list</a>
-
     {% form_theme formCreateSortie 'bootstrap_5_layout.html.twig' %}
-    {{ form(formCreateSortie) }}
+{#    {{ form(formCreateSortie) }}#}
+
+    {{ form_start(formCreateSortie) }}
+
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.nom) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.nom) }}
+            {{ form_errors(formCreateSortie.nom) }}
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-1">
+            <strong>Campus</strong>
+        </div>
+        <div class="col-4">
+            {{campusUser.nom}}
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.dateHeureDebut) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.dateHeureDebut) }}
+            {{ form_errors(formCreateSortie.dateHeureDebut) }}
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-1">
+            <strong>{{ form_label(formCreateSortie.ville) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.ville) }}
+            {{ form_errors(formCreateSortie.ville) }}
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.dateLimiteInscription) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.dateLimiteInscription) }}
+            {{ form_errors(formCreateSortie.dateLimiteInscription) }}
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-1">
+            <strong>{{ form_label(formCreateSortie.lieu) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.lieu) }}
+            {{ form_errors(formCreateSortie.lieu) }}
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.nbInscriptionsMax) }}</strong>
+        </div>
+        <div class="col-4">
+            {{ form_widget(formCreateSortie.nbInscriptionsMax) }}
+            {{ form_errors(formCreateSortie.nbInscriptionsMax) }}
+        </div>
+        <div class="col-1">
+        </div>
+{#        <div class="col-1">#}
+{#            <strong>{{ form_label(formCreateSortie.rue) }}</strong>#}
+{#        </div>#}
+{#        <div class="col-4">#}
+{#            {{ form_widget(formCreateSortie.rue) }}#}
+{#        </div>#}
+    </div>
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.duree) }}</strong>
+        </div>
+        <div class="col-3">
+            {{ form_widget(formCreateSortie.duree) }}
+            {{ form_errors(formCreateSortie.duree) }}
+        </div>
+        <div class="col-auto">
+            <span id="passwordHelpInline" class="form-text">
+                minutes
+            </span>
+        </div>
+        <div class="col-1">
+        </div>
+        <div class="col-1">
+            <strong>Code Postal</strong>
+        </div>
+        <div class="col-4">
+            cp
+        </div>
+    </div>
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-2">
+            <strong>{{ form_label(formCreateSortie.infosSortie) }}</strong>
+        </div>
+        <div class="col-10">
+            {{ form_widget(formCreateSortie.infosSortie) }}
+            {{ form_errors(formCreateSortie.infosSortie) }}
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-3 col-md-offset-4 text-center mt-4">
+            {{ form_row(formCreateSortie.save) }}
+        </div>
+        <div class="col-md-3 col-md-offset-4 text-center mt-4">
+            {{ form_row(formCreateSortie.saveAndPublish) }}
+        </div>
+        <div class="col-md-3 col-md-offset-4 text-center mt-4">
+            <a onclick="return confirm('Êtes-vous sûr(e) de vouloir supprimer la sortie : {{ sortie.nom|title }} ?')"
+               href="{{ path('sortie_supprimer', {'id': sortie.id }) }}" class="btn btn-danger btn-lg">Supprimer</a>
+        </div>
+        <div class="col-md-3 col-md-offset-4 text-center mt-4">
+            <a href="{{ path('sortie_details', {'id': sortie.id}) }}" class="btn btn-secondary btn-lg">
+                Annuler</a>
+        </div>
+    </div>
+
+
+    {{ form_end(formCreateSortie) }}
 {% endblock %}

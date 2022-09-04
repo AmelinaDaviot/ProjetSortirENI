@@ -19,9 +19,26 @@
 
 {% block main %}
 
+    {{ include('accueil/messageFlash.html.twig') }}
+
+    <div class="col mt-3 mb-3 text-center">
+        {% if participant.img %}
+            <img src="{{ asset('uploads/users/photos/' ~ participant.img) }}" alt="Photo_de_profil"
+                 height="20%" width="20%"
+                 class="img-thumbnail rounded img-fluid">
+        {% endif %}
+    </div>
+
     <div class="row">
+
         <table class="table">
             <tbody>
+            {% if app.user == participant %}
+                <tr>
+                    <th scope="row">Pseudo</th>
+                    <td>{{ participant.pseudo }}</td>
+                </tr>
+            {% endif %}
             <tr>
                 <th scope="row">Prénom</th>
                 <td>{{ participant.prenom }}</td>
@@ -44,15 +61,18 @@
             </tr>
             </tbody>
         </table>
+
+
+
         <div class="col text-center mb-3 mt-3">
-            <a href="{{ path('accueil') }}" class="btn btn-primary mr-3">
+            <a href="{{ path('accueil') }}" class="btn btn-primary btn-lg mr-3">
                 Retour</a>
 
         {% if app.user == participant %}
 
 
 
-        <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo }) }}" class="btn btn-warning">
+        <a href="{{ path('participant_modifier', {'pseudo': participant.pseudo }) }}" class="btn btn-warning btn-lg">
             Modifier mon profil</a>
         {% endif %}
             </div>

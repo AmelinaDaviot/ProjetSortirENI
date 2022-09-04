@@ -3,26 +3,26 @@
 {% block title %}Lieu liste{% endblock %}
 
 {% block body %}
-    <h1>Location index</h1>
+    <h1>Lieu index</h1>
 
     <table class="table">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Address</th>
+            <th>Nom</th>
+            <th>Addresse</th>
             <th>actions</th>
         </tr>
         </thead>
         <tbody>
-        {% for lieu in lieus %}
+        {% for lieu in lieu %}
             <tr>
-                <td>{{ location.id }}</td>
-                <td>{{ location.name }}</td>
-                <td>{{ location.address }}</td>
+                <td>{{ lieu.id }}</td>
+                <td>{{ lieu.nom }}</td>
+                <td>{{ lieu.addresse }}</td>
                 <td>
-                    <a href="{{ path('location_show', {'id': location.id}) }}">apercu</a>
-                    <a href="{{ path('location_edit', {'id': location.id}) }}">modifier</a>
+                    <a href="{{ path('lieu_delete', {'id': lieu.id}) }}">supprimer</a>
+                    <a href="{{ path('lieu_edit', {'id': lieu.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +33,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('location_new') }}">Créer nouveau</a>
+    <a href="{{ path('lieu_new') }}">Create new</a>
 {% endblock %}

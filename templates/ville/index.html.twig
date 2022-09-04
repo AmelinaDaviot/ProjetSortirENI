@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ville index{% endblock %}
+
+{% block informations %}
+    <h1 class="jumbotron-heading text-center">Gérer les villes</h1>
+{% endblock %}
+
+
+{% block main %}
+    <h2>Filtrer les Villes</h2>
+
+    <table class="table caption-top">
+        {#        <caption>List of users</caption>#}
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Ville</th>
+            <th scope="col">Code Postal</th>
+            <th scope="col">Modifier/Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ville in ville %}
+            <tr>
+                <td>{{ ville.id }}</td>
+                <td>{{ ville.nom }}</td>
+                <td>&emsp;{{ ville.codePostal }}</td>
+                <td>
+                    &emsp;&emsp;<a href="{{ path('ville_edit', { 'id': ville.id }) }}" alt="Modifier" title="Modifier"  class="btn btn-sm btn-warning"><i class="fa-solid fa-pencil"></i></a>&ensp;
+                    <a href="{{ path('ville_delete', { 'id': ville.id }) }}" alt="Supprimer" title="Supprimer" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></a>
+                </td>
+            </tr>
+
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('ville_new') }}"type="button" class="btn btn-secondary btn-lg mb-5 mt-4">Ajouter une ville</a>
+{% endblock %}

@@ -69,10 +69,9 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      *     max = 50,
      *     minMessage = "Le mot de passe doit contenir au minimum {{ limit }} caractères !",
      *     maxMessage = "Le mot de passe doit contenir au maximum {{ limit }} caractères !",)
+     * @Assert\NotCompromisedPassword(message="Le mot de passe n'est pas assez complexe !", skipOnError=true)
      */
     private ?string $plainPassword;
-    // à rajouter lorsqu'on voudra présenter notre projet et donc sécuriser le mdp
-//* @Assert\NotCompromisedPassword(message="Le mot de passe n'est pas assez complexe !", skipOnError=true)
 
     /**
      * @ORM\Column(name="nom", type="string", length=50)
@@ -117,22 +116,30 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Campus $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
      */
-    private $sorties;
+    private Collection $sorties;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
      */
-    private $orgaSortie;
+    private Collection $sortiesOrganisees;
 
+    /**
+     * @var string
+     * @ORM\Column(name="img", type="string", nullable=true)
+     * @Assert\File(
+     *     mimeTypes={"image/png" ,"image/jpg","image/jpeg"},
+     *     mimeTypesMessage = "Svp inserer une image valide (png,jpg,jpeg)")
+     */
+    private ?string $img;
 
 
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
-        $this->organisateur = new ArrayCollection();
-        $this->orgaSortie = new ArrayCollection();
+        $this->sortiesOrganisees = new ArrayCollection();
+
     }
 
 
@@ -349,50 +356,20 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->sorties;
     }
 
-    public function addSorty(Sortie $sorty): self
+    public function addSortie(Sortie $sortie): self
     {
-        if (!$this->sorties->contains($sorty)) {
-            $this->sorties[] = $sorty;
-            $sorty->addParticipant($this);
+        if (!$this->sorties->contains($sortie)) {
+            $this->sorties[] = $sortie;
+            $sortie->addParticipant($this);
         }
 
         return $this;
     }
 
-    public function removeSorty(Sortie $sorty): self
+    public function removeSortie(Sortie $sortie): self
     {
-        if ($this->sorties->removeElement($sorty)) {
-            $sorty->removeParticipant($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Sortie>
-     */
-    public function getOrganisateur(): Collection
-    {
-        return $this->organisateur;
-    }
-
-    public function addOrganisateur(Sortie $organisateur): self
-    {
-        if (!$this->organisateur->contains($organisateur)) {
-            $this->organisateur[] = $organisateur;
-            $organisateur->setOrganisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrganisateur(Sortie $organisateur): self
-    {
-        if ($this->organisateur->removeElement($organisateur)) {
-            // set the owning side to null (unless already changed)
-            if ($organisateur->getOrganisateur() === $this) {
-                $organisateur->setOrganisateur(null);
-            }
+        if ($this->sorties->removeElement($sortie)) {
+            $sortie->removeParticipant($this);
         }
 
         return $this;
@@ -401,31 +378,43 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Sortie>
      */
-    public function getOrgaSortie(): Collection
+    public function getSortiesOrganisees(): Collection
     {
-        return $this->orgaSortie;
+        return $this->sortiesOrganisees;
     }
 
-    public function addOrgaSortie(Sortie $orgaSortie): self
+    public function addSortiesOrganisees(Sortie $sortiesOrganisees): self
     {
-        if (!$this->orgaSortie->contains($orgaSortie)) {
-            $this->orgaSortie[] = $orgaSortie;
-            $orgaSortie->setParticipant($this);
+        if (!$this->sortiesOrganisees->contains($sortiesOrganisees)) {
+            $this->sortiesOrganisees[] = $sortiesOrganisees;
+            $sortiesOrganisees->setOrganisateur($this);
         }
 
         return $this;
     }
 
-    public function removeOrgaSortie(Sortie $orgaSortie): self
+    public function removeSortiesOrganisees(Sortie $sortiesOrganisees): self
     {
-        if ($this->orgaSortie->removeElement($orgaSortie)) {
+        if ($this->sortiesOrganisees->removeElement($sortiesOrganisees)) {
             // set the owning side to null (unless already changed)
-            if ($orgaSortie->getParticipant() === $this) {
-                $orgaSortie->setParticipant(null);
+            if ($sortiesOrganisees->getOrganisateur() === $this) {
+                $sortiesOrganisees->setOrganisateur(null);
             }
         }
 
         return $this;
+    }
+
+    public function getImg()
+    {
+        return $this->img;
+    }
+    /**
+     * @param string $img
+     */
+    public function setImg(string $img): void
+    {
+        $this->img = $img;
     }
 
 

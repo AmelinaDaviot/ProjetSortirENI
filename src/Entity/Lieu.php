@@ -17,23 +17,28 @@ class Lieu
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private ?string $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $rue;
+    private ?string $rue;
 
     /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="lieu")
      */
-    private $sorties;
+    private Collection $sorties;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="lieux")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?Ville $ville;
 
 
     public function __construct()
@@ -52,11 +57,10 @@ class Lieu
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(string $nom): void
     {
         $this->nom = $nom;
 
-        return $this;
     }
 
     public function getRue(): ?string
@@ -64,43 +68,47 @@ class Lieu
         return $this->rue;
     }
 
-    public function setRue(string $rue): self
+    public function setRue(string $rue): void
     {
         $this->rue = $rue;
 
-        return $this;
+    }
+
+
+    public function __toString(): ?string
+    {
+        return $this->getNom();
     }
 
     /**
-     * @return Collection|Sortie[]
+     * @return Collection<int, Sortie>
      */
     public function getSorties(): Collection
     {
         return $this->sorties;
     }
 
-//    public function addSorty(Sortie $sorty): self
-//    {
-//        if (!$this->sorties->contains($sorty)) {
-//            $this->sorties[] = $sorty;
-//            $sorty->setLieu($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeSorty(Sortie $sorty): self
-//    {
-//        if ($this->sorties->contains($sorty)) {
-//            $this->sorties->removeElement($sorty);
-//            // set the owning side to null (unless already changed)
-//            if ($sorty->getLieu() === $this) {
-//                $sorty->setLieu(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
+    public function addSorties(Sortie $sorties): self
+    {
+        if (!$this->sorties->contains($sorties)) {
+            $this->sorties[] = $sorties;
+            $sorties->setLieu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorties(Sortie $sorties): self
+    {
+        if ($this->sorties->removeElement($sorties)) {
+            // set the owning side to null (unless already changed)
+            if ($sorties->getLieu() === $this) {
+                $sorties->setLieu(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getVille(): ?Ville
     {
@@ -114,39 +122,6 @@ class Lieu
         return $this;
     }
 
-    public function __toString(): ?string
-    {
-        return $this->getNom();
-    }
 
-//    /**
-//     * @return Collection<int, Sortie>
-//     */
-//    public function getSorties(): Collection
-//    {
-//        return $this->sorties;
-//    }
-//
-//    public function addSorty(Sortie $sorty): self
-//    {
-//        if (!$this->sorties->contains($sorty)) {
-//            $this->sorties[] = $sorty;
-//            $sorty->setLieu($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeSorty(Sortie $sorty): self
-//    {
-//        if ($this->sorties->removeElement($sorty)) {
-//            // set the owning side to null (unless already changed)
-//            if ($sorty->getLieu() === $this) {
-//                $sorty->setLieu(null);
-//            }
-//        }
-//
-//        return $this;
-//    }
 
 }

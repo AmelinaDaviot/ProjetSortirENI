@@ -54,5 +54,19 @@ class LieuController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{id}/delete", name="delete") }
+     */
+    public function delete(Request $request, Lieu $lieu): Response
+    {
+        //if ($this->isCsrfTokenValid('delete' . $lieu->getId(), $request->request->get('_token'))) {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($lieu);
+        $entityManager->flush();
+        //  }
+
+        return $this->redirectToRoute('lieu_index');
+    }
+
 
 }

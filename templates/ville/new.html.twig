@@ -1,0 +1,25 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Ville{% endblock %}
+
+{% block informations %}
+    <h1 class="jumbotron-heading text-center">Ajouter une nouvelle ville</h1></h1>
+{% endblock %}
+
+{% block main %}
+
+
+    {{ include('ville/_form.html.twig') }}
+
+    {#    {% form_theme formCreateSortie 'bootstrap_5_layout.html.twig' %}#}
+    {#    {{ form(formCreateSortie)}}#}
+
+    <a href="{{ path('ville_index') }}">retour à la gestion des villes</a>
+
+{% endblock %}
+
+
+
+
+

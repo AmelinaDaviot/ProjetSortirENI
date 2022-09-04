@@ -27,25 +27,25 @@ class EtatRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Etat $entity, bool $flush = true): void
-    {
-        $this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
-    }
+//    public function add(Etat $entity, bool $flush = true): void
+//    {
+//        $this->_em->persist($entity);
+//        if ($flush) {
+//            $this->_em->flush();
+//        }
+//    }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Etat $entity, bool $flush = true): void
-    {
-        $this->_em->remove($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
-    }
+//    public function remove(Etat $entity, bool $flush = true): void
+//    {
+//        $this->_em->remove($entity);
+//        if ($flush) {
+//            $this->_em->flush();
+//        }
+//    }
 
     // /**
     //  * @return Etat[] Returns an array of Etat objects

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}modifier une ville{% endblock %}
+
+{%  block informations %}
+    <h1 class="jumbotron-heading text-center">Modifier une ville</h1>
+
+{% endblock %}
+
+{% block main %}
+
+
+    {{ include('ville/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a href="{{ path('ville_index') }}"alt="Retour" title="Retour à la gestion des Villes" class="btn btn-lg"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+
+    {#    {{ include('ville/_delete_form.html.twig') }}#}
+{% endblock %}

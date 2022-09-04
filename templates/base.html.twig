@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <title>{% block title %}Sortir{% endblock %}</title>
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     </head>
 
     <body>
@@ -19,7 +20,9 @@
                 <div class="row">
                     <div class="col-sm-8 col-md-7 py-4">
                         <h4 class="text-white">Bienvenue {% if app.user %}{{ app.user.pseudo|capitalize }} {% endif %}</h4>
-                        <p class="text-muted">Nulla ullamcorper pharetra nunc. Fusce suscipit luctus arcu, a dapibus mauris tincidunt sed. Morbi dignissim risus sed turpis fringilla, quis pretium mauris consequat. Quisque suscipit cursus posuere. Nam ipsum nibh, posuere id arcu quis, gravida dignissim ligula. Aliquam blandit pretium tortor, et fringilla felis posuere et.</p>
+                        <p class="text-muted"> • La société ENI souhaite développer pour ses stagiaires actifs ainsi que ses anciens stagiaires une plateforme web leur permettant d’organiser des sorties. <br>
+                            <br>• La plateforme est une plateforme privée dont l’inscription sera gérée par le ou les administrateurs. <br>
+                            <br>• Les sorties, ainsi que les participants ont un site de rattachement, pour permettre une organisation géographique des sorties.</p>
                     </div>
                     <div class="col-sm-4 offset-md-1 py-4">
                         <h4 class="text-white">Menu</h4>
@@ -28,10 +31,10 @@
                             {% if app.user%}
                             <li><a href="{{ path('participant_profil', {'pseudo': app.user.pseudo }) }}" class="text-white">Mon profil</a></li>
                             {% endif %}
-                            <li><a href="{{ path('app_sortie_new') }}" class="text-white">Créer une sortie</a></li>
+                            <li><a href="{{ path('sortie_creer') }}" class="text-white">Créer une sortie</a></li>
                             {% if is_granted ('ROLE_ADMIN') %}
-                                <li><a href="{{ path('securite_connexion') }}" class="text-white">Villes</a></li>
-                                <li><a href="{{ path('securite_connexion') }}" class="text-white">Campus</a></li>
+                                <li><a href="{{ path('ville_index') }}}" class="text-white">Villes</a></li>
+                                <li><a href="{{ path('campus_index') }}" class="text-white">Campus</a></li>
                                 <li><a href="{{ path('admin_inscription') }}" class="text-white">Ajouter un utilisateur</a></li>
                             {% endif %}
                         </ul>
@@ -96,10 +99,10 @@
         </div>
 
     </footer>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+{% block JavaScripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
+{% endblock %}
     </body>
     </html>
 

@@ -2,48 +2,141 @@
 
 {% block title %}Sortie{% endblock %}
 
-{% block main %}
-    <h1>Sortie</h1>
 
-    <table class="table">
+    {% if sortie.etat.id == 1 %}
+        {% set text = 'En création' %}
+
+    {% elseif sortie.etat.id == 2 %}
+        {% set text = 'Ouverte' %}
+
+    {% elseif sortie.etat.id == 3 %}
+        {% set text = 'Clôturée' %}
+
+    {% elseif sortie.etat.id == 4 %}
+        {% set text = 'En cours' %}
+
+    {% elseif sortie.etat.id == 5 %}
+        {% set text = 'Passée' %}
+
+    {% elseif sortie.etat.id == 6 %}
+        {% set text = 'Annulée' %}
+
+    {% endif %}
+
+
+{% block informations %}
+    <h1 class="jumbotron-heading text-center">Sortie</h1>
+    <h4 class="jumbotron-heading text-center"> <div title="{{ text }}"><i>{{ sortie.nom|title }}</i> </div><br></h4>
+    {% if sortie.etat.id == 6 %}
+        <h3 class="text-center text-danger"><strong>Sortie annulée: {{sortie.motifAnnulation}}</h3></strong>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+
+    {{ include('accueil/messageFlash.html.twig') }}
+
+    <table class="table mb-2">
         <tbody>
+
             <tr>
-                <th>Id</th>
-                <td>{{ sortie.id }}</td>
+                <th>Nom de la sortie</th>
+                <td>{{ sortie.nom|title }}</td>
             </tr>
             <tr>
-                <th>Nom</th>
-                <td>{{ sortie.nom }}</td>
+                <th>Date et heure de la sortie</th>
+                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d/m/Y à H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>DateHeureDebut</th>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Date limite d'inscription</th>
+                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d/m/Y à H:i') : '' }}</td>
             </tr>
             <tr>
-                <th>Duree</th>
-                <td>{{ sortie.duree }}</td>
-            </tr>
-            <tr>
-                <th>NbInscriptionsMax</th>
+                <th>Nombre de places</th>
                 <td>{{ sortie.nbInscriptionsMax }}</td>
             </tr>
             <tr>
-                <th>InfosSortie</th>
-                <td>{{ sortie.infosSortie }}</td>
+                <th>Durée</th>
+                <td>{{ sortie.duree }} minutes</td>
             </tr>
             <tr>
-                <th>MotifAnnulation</th>
-                <td>{{ sortie.motifAnnulation }}</td>
+                <th>Description et informations</th>
+                <td>{{ (sortie.infosSortie|default('Non communiquée'))|nl2br }}</td>
             </tr>
             <tr>
-                <th>DateLimiteInscription</th>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Ville organisatrice</th>
+                <td>{{ sortie.lieu.ville.nom }}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>{{ sortie.lieu.nom }}</td>
+            </tr>
+            <tr>
+                <th>Rue</th>
+                <td>{{ sortie.lieu.rue }}</td>
+            </tr>
+            <tr>
+                <th>Code Postal</th>
+                <td>{{ sortie.lieu.ville.codePostal }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_sortie_index') }}">back to list</a>
 
-    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
 
+<div id="accordion">
+    <div class="card">
+        <div class="card-header bg-dark" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" id="listeInscritsBtn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Liste des participants inscrits
+                </button>
+            </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                <h5 class="mb-4">Organisateur :
+                    <a class="orgaLien"href="{{ path('participant_profil', {'pseudo': sortie.organisateur.pseudo }) }}"> {{ sortie.organisateur.pseudo|capitalize }}</h5></h5>
+{#                    <div class="container">#}
+                    <table class="table table-hover" id="tableauInscrits">
+                        <thead class="bordered ml-3">
+                        <tr>
+                            <th class="titre" scope="col">Pseudo</th>
+                            <th class="titre" scope="col">Nom</th>
+                        </tr>
+                        </thead>
+                        {% for participants in sortie.participants %}
+                        <tbody>
+                        <tr>
+                            <td><a class="pseudoLien" href="{{ path('participant_profil', {'pseudo': participants.pseudo }) }}">
+                                {{ participants.pseudo|capitalize }}
+                                </a></td>
+                            <td>{{ participants.prenom|capitalize }} {{ participants.nom|upper }}</td>
+                        </tr>
+                        </tbody>
+                        {% endfor%}
+                    </table>
+{#                    </div>#}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{#{{ participants.pseudo }}#}
+
+
+<div class="col text-center mb-5 mt-5">
+    <a href="{{ path('accueil') }}" class="btn btn-primary btn-lg mr-3">
+        Retour</a>
+
+    {% if app.user == sortie.organisateur %}
+    {% if sortie.etat.id == 1 %}
+        <a href="{{ path('sortie_modifier', {'id': sortie.id }) }}" class="btn btn-warning btn-lg">
+            Modifier la sortie</a>
+        {% endif %}
+    {% endif %}
+<br>
+
+</div>
 {% endblock %}

@@ -3,29 +3,29 @@
 {% block title %}Lieu detail{% endblock %}
 
 {% block body %}
-    <h1>Location</h1>
+    <h1>Lieu</h1>
 
     <table class="table">
         <tbody>
         <tr>
             <th>Id</th>
-            <td>{{ location.id }}</td>
+            <td>{{ lieu.id }}</td>
         </tr>
         <tr>
-            <th>Name</th>
-            <td>{{ location.name }}</td>
+            <th>Nom</th>
+            <td>{{ lieu.nom }}</td>
         </tr>
         <tr>
-            <th>Address</th>
-            <td>{{ location.address }}</td>
+            <th>Addresse</th>
+            <td>{{ lieu.addresse }}</td>
         </tr>
 
         </tbody>
     </table>
 
-    <a href="{{ path('location_index') }}">retour a la liste</a>
+    <a href="{{ path('lieu_index') }}">back to list</a>
 
-    <a href="{{ path('location_edit', {'id': location.id}) }}">modifier</a>
+    <a href="{{ path('lieu_edit', {'id': lieu.id}) }}">edit</a>
 
-    {{ include('location/annuler_sortie.html.twig') }}
+    {{ include('lieu/annuler_sortie.html.twig') }}
 {% endblock %}
